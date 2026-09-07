@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>unknown-signal</title>
+  
+  <!-- Typography & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- D3.js and TopoJSON Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Cinematic Entry Stylesheet -->
+  <link rel="stylesheet" href="entry.css">
+</head>
+<body class="entry-active">
+  <!-- =========================================================================
+       UNKNOWN SIGNAL - CINEMATIC ENTRY / ACCESS RESTRICTED OVERLAY
+       ========================================================================= -->
+  <div id="entry-overlay" class="entry-overlay" role="dialog" aria-modal="true" aria-label="Security Access Clearance" tabindex="0">
+    <!-- Blurred Background Image Layer (User Uploaded Dashboard) -->
+    <div class="entry-bg-image"></div>
+    
+    <!-- Dark Classified Atmosphere Backdrop -->
+    <div class="entry-backdrop"></div>
+    <div class="entry-scanlines"></div>
+    <div class="entry-sweep"></div>
+
+    <!-- Hazard Caution Tape Barrier Strips -->
+    <div class="hazard-tape tape-1">
+      <div class="tape-track">
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+      </div>
+    </div>
+
+    <div class="hazard-tape tape-2">
+      <div class="tape-track">
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+      </div>
+    </div>
+
+    <div class="hazard-tape tape-3">
+      <div class="tape-track">
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+      </div>
+    </div>
+
+    <div class="hazard-tape tape-4">
+      <div class="tape-track">
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+      </div>
+    </div>
+
+    <!-- Central Classified Security Access Card -->
+    <div class="restricted-card" id="restricted-card">
+      <div class="card-tech-header">
+        <span class="tech-id">UNKNOWN SIGNAL // PROTOCOL 9-X</span>
+        <span class="tech-badge">LVL-7 AUTHORIZATION</span>
+      </div>
+
+      <div class="restriction-icon" id="restriction-icon">
+        <div class="icon-circle">
+          <span class="icon-bar"></span>
+          <span class="icon-check">✓</span>
+        </div>
+      </div>
+
+      <h1 class="card-heading" id="card-heading">ACCESS RESTRICTED</h1>
+      <div class="card-subtext" id="card-subtext">CLICK ANYWHERE // AUTHENTICATE</div>
+
+      <!-- Authentication Real-Time Terminal -->
+      <div class="card-terminal" id="card-terminal">
+        <div class="terminal-line" id="term-line-1">&gt; CLEARANCE REQUIRED // STANDBY</div>
+        <div class="terminal-line" id="term-line-2"></div>
+      </div>
+
+      <div class="card-tech-footer">
+        <span>SYSTEM SECURITY PROTOCOL</span>
+        <span>CLEARANCE LEVEL 7</span>
+      </div>
+    </div>
+
+    <!-- Technical Skip Option -->
+    <button class="skip-entry" id="skip-entry" title="Skip Intro">SKIP //</button>
+  </div>
+
+  <!-- Mobile Restricted Interface Warning Overlay (Past Mobile Screen) -->
+  <div id="mobile-warning" class="mobile-warning">
+    <!-- Screen Flash Warning Vignette -->
+    <div class="mobile-flash-overlay" id="mobile-flash-overlay"></div>
+
+    <!-- Hazard Tape Barrier Strips -->
+    <div class="tape-strip tape-diagonal-top">
+      <div class="tape-track">
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+      </div>
+    </div>
+    <div class="tape-strip tape-diagonal-1">
+      <div class="tape-track">
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+      </div>
+    </div>
+    <div class="tape-strip tape-diagonal-2">
+      <div class="tape-track">
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+      </div>
+    </div>
+    <div class="tape-strip tape-diagonal-bottom">
+      <div class="tape-track">
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+      </div>
+    </div>
+
+    <!-- Shockwave Pulse Ring Effect -->
+    <div class="mobile-pulse-ring" id="mobile-pulse-ring"></div>
+
+    <!-- Center Classification Badge -->
+    <div class="restricted-card" id="mobile-restricted-card">
+      <div class="card-inner-border">
+        <div class="restricted-icon">
+          <span class="restricted-bar"></span>
+        </div>
+        <h2 class="restricted-heading">ACCESS RESTRICTED</h2>
+        <div class="restricted-sub" id="mobile-restricted-sub">CLICK ANYWHERE &middot; AUTHENTICATE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header Bar -->
+  <div class="topbar">
+    <div class="topbar-title">⬡ UNKNOWN-SIGNAL // ACTIVE</div>
+    <div class="topbar-status">
+      <span><i class="dot-pulse"></i> RADAR ACTIVE</span>
+      <span id="count-display">18 INCIDENTS</span>
+      <span id="clock-display">--:--:-- UTC</span>
+    </div>
+  </div>
+
+  <!-- Main Viewport -->
+  <div class="main">
+    <!-- Left Incident Log Panel -->
+    <div class="left-panel">
+      <div class="panel-header">
+        INCIDENT LOG 
+        <span id="filter-count">ALL</span>
+      </div>
+      <div class="search-box">
+        <input id="search-input" type="text" placeholder="// SEARCH INCIDENTS...">
+      </div>
+      <div id="incident-list" class="incident-list"></div>
+      <div class="stat-bar">
+        <div>TOTAL LOGGED: <span id="stat-total">18</span></div>
+        <div>SENSOR: <span>ACTIVE</span></div>
+      </div>
+    </div>
+
+    <!-- Center Interactive Map Area -->
+    <div class="map-area" id="map-area">
+      <div class="scanlines"></div>
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+      <div class="crosshair-x"></div>
+      <div class="crosshair-y"></div>
+
+      <!-- Map Toolbar Controls -->
+      <div class="zoom-controls">
+        <button class="zoom-btn" id="btn-zoom-in" title="Zoom In">+</button>
+        <button class="zoom-btn" id="btn-zoom-out" title="Zoom Out">−</button>
+        <button class="zoom-btn zoom-reset" id="btn-reset" title="Reset Map View">RST</button>
+        <button class="tool-btn" id="btn-tools" title="Toggle Connection Lines">CL</button>
+        <button class="timeline-btn" id="btn-timeline" title="Toggle Incident Timeline Chart">TL</button>
+      </div>
+      <div class="zoom-level" id="zoom-lvl">1.0x</div>
+
+      <!-- Main World Map Canvas -->
+      <svg id="world-map"></svg>
+
+      <!-- D3 Timeline Modal Popup -->
+      <div id="timeline-popup" class="timeline-popup">
+        <div class="timeline-box">
+          <div class="timeline-box-header">
+            <div class="timeline-box-title">UAP INCIDENT TIMELINE 1945 - 2026</div>
+            <button class="timeline-close" id="timeline-close">X</button>
+          </div>
+          <div class="timeline-chart-area">
+            <div id="timeline-svg-wrap" class="timeline-svg-wrap"></div>
+          </div>
+          <div id="timeline-stats" class="timeline-stats"></div>
+        </div>
+      </div>
+
+      <!-- Loading Overlay -->
+      <div id="loading-overlay">
+        <div class="ld-text">LOADING WORLD MAP</div>
+        <div class="ld-sub">FETCHING GEOGRAPHIC DATA...</div>
+      </div>
+
+      <!-- Map Legend & Coords -->
+      <div class="legend">
+        <div class="legend-item">
+          <div class="leg-dot" style="background: #e8520a;"></div> UNRESOLVED
+        </div>
+        <div class="legend-item">
+          <div class="leg-dot" style="background: #2aff8a;"></div> CONFIRMED
+        </div>
+        <div class="legend-item">
+          <div class="leg-dot" style="background: #ff4040;"></div> CLASSIFIED
+        </div>
+      </div>
+      <div id="coords-display" class="coords">LAT: 00.000 | LNG: 000.000</div>
+      
+      <!-- Pinned Map Tooltip -->
+      <div id="map-tooltip" class="map-tooltip"></div>
+    </div>
+
+    <!-- Right Side Vertical CoverFlow Media Gallery Panel -->
+    <div class="right-gallery-panel">
+      <div class="panel-header">
+        GALLERY MEDIA
+        <span id="gallery-count">9 PHOTOS</span>
+      </div>
+      <div class="carousel-arrow" id="btn-carousel-up" title="Previous Photo">
+        <div class="arrow-box">▲</div>
+      </div>
+      <div class="carousel-viewport" id="carousel-viewport">
+        <div class="carousel-track" id="carousel-track"></div>
+      </div>
+      <div class="carousel-arrow" id="btn-carousel-down" title="Next Photo">
+        <div class="arrow-box">▼</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom System Bar -->
+  <div class="bottombar">
+    <span>UAP MONITOR ACTIVE</span>
+    <span style="margin-left: 20px;">SENSORS: OPTICAL / INFRARED / RADAR</span>
+    <span style="margin-left: 20px;">ORBITAL TRACKING: ONLINE</span>
+  </div>
+
+  <!-- Incident Detail Modal Popup -->
+  <div id="incident-modal" class="incident-modal">
+    <div class="modal-box">
+      <button class="modal-close" id="modal-close">X</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Incident & Gallery Datasets -->
+  <script src="data/incidents.js"></script>
+  <script src="data/gallery.js"></script>
+
+  <!-- Application Engine Script -->
+  <script src="app.js"></script>
+
+  <!-- Interactive Cinematic Entry Controller -->
+  <script src="entry.js"></script>
+
+  <!-- Mobile Restriction Interaction Handler (Past Mobile Screen) -->
+  <script>
+    (function() {
+      const mobileWarning = document.getElementById('mobile-warning');
+      const restrictedCard = document.getElementById('mobile-restricted-card');
+      const restrictedSub = document.getElementById('mobile-restricted-sub');
+      const pulseRing = document.getElementById('mobile-pulse-ring');
+      const flashOverlay = document.getElementById('mobile-flash-overlay');
+
+      if (!mobileWarning || !restrictedCard || !restrictedSub) return;
+
+      let timer = null;
+      let lastTapTime = 0;
+
+      // Synthetic Classified Audio Denial Tone (Zero external dependencies)
+      function playDenialBeep() {
+        try {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContextClass) return;
+          if (!window.__mobAudioCtx) {
+            window.__mobAudioCtx = new AudioContextClass();
+          }
+          const ctx = window.__mobAudioCtx;
+          if (ctx.state === 'suspended') {
+            ctx.resume();
+          }
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(110, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.14);
+
+          gain.gain.setValueAtTime(0.18, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.14);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.15);
+        } catch (e) {
+          // Audio fails gracefully if browser restricts
+        }
+      }
+
+      function triggerMobileDenial(e) {
+        const now = Date.now();
+        if (now - lastTapTime < 250) return; // Prevent double trigger from touch+click
+        lastTapTime = now;
+
+        // 1. Trigger Card Shake Animation
+        restrictedCard.classList.remove('denied-shake');
+        void restrictedCard.offsetWidth; // force DOM reflow
+        restrictedCard.classList.add('denied-shake');
+
+        // 2. Trigger Expanding Shockwave Pulse Ring Effect
+        if (pulseRing) {
+          pulseRing.classList.remove('pulse-active');
+          void pulseRing.offsetWidth;
+          pulseRing.classList.add('pulse-active');
+        }
+
+        // 3. Trigger Screen Perimeter Flash Effect
+        if (flashOverlay) {
+          flashOverlay.classList.remove('flash-active');
+          void flashOverlay.offsetWidth;
+          flashOverlay.classList.add('flash-active');
+        }
+
+        // 4. Update Subtext Feedback
+        restrictedSub.textContent = '[ AUTH FAILED // DESKTOP TERMINAL REQUIRED ]';
+        restrictedSub.style.color = '#ff3366';
+
+        // 5. Tactile Haptic Vibration for Mobile Devices
+        try {
+          if (navigator.vibrate) {
+            navigator.vibrate([45, 30, 45]);
+          }
+        } catch (err) {}
+
+        // 6. Play Micro Denial Sound Effect
+        playDenialBeep();
+
+        // 7. Reset Subtext after delay
+        clearTimeout(timer);
+        timer = setTimeout(function() {
+          restrictedSub.innerHTML = 'CLICK ANYWHERE &middot; AUTHENTICATE';
+          restrictedSub.style.color = '#ff7597';
+        }, 2200);
+      }
+
+      // Support pointerdown, touchstart, and click for instant response across all devices
+      mobileWarning.addEventListener('pointerdown', triggerMobileDenial, { passive: true });
+      mobileWarning.addEventListener('click', triggerMobileDenial);
+    })();
+  </script>
+</body>
+</html>
