@@ -1,0 +1,20 @@
+2026-09-08 06:54:50.073: [INFO] CurrentProfilePath: D:\UAP_Signal-main\.temp_edge_test_profile\Default
+2026-09-08 06:54:50.073: [INFO] Profiles total count: 1
+2026-09-08 06:54:50.073: [INFO] Profile: name=Profile 1 path=D:\UAP_Signal-main\.temp_edge_test_profile\Default lastActive=null
+2026-09-08 06:54:50.073: [INFO] LastUsedProfileDir: D:\UAP_Signal-main\.temp_edge_test_profile\Default
+2026-09-08 06:54:50.073: [INFO] VisibilityChanged: 0
+2026-09-08 06:54:50.090: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-08 06:54:50.090: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-08 06:54:50.091: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-08 06:54:50.091: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-08 06:54:50.092: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-08 06:54:50.095: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-08 06:54:50.095: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-08 06:54:50.096: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-08 06:54:50.097: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-08 06:54:50.098: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-09-08 06:54:50.116: [INFO] OnDoneLoading sync enabled: 0
+2026-09-08 06:54:50.116: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-09-08 06:54:50.116: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-09-08 06:54:50.116: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-09-08 06:54:50.118: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
