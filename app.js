@@ -615,6 +615,113 @@ function selectIncident(id) {
 // ── 7. VERTICAL INFINITE COVERFLOW GALLERY CAROUSEL ────────────────────────
 let galleryScrollIndex = 5;
 
+// =========================================================================
+// GALLERY AUDIO ENGINE (ARCADE SOUND EFFECT FROM @rexa-developer/tiks)
+// =========================================================================
+let galleryAudioCtx = null;
+let lastArcadeSoundTime = 0;
+const ARCADE_SOUND_THROTTLE_MS = 60;
+
+function getGalleryAudioContext() {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return null;
+    if (!galleryAudioCtx) {
+      galleryAudioCtx = new AudioCtx();
+    }
+    if (galleryAudioCtx.state === 'suspended') {
+      galleryAudioCtx.resume().catch(() => {});
+    }
+    return galleryAudioCtx;
+  } catch (e) {
+    return null;
+  }
+}
+
+// Pre-unlock Web Audio API on first user gesture anywhere
+if (typeof window !== 'undefined') {
+  const unlockAudio = () => {
+    getGalleryAudioContext();
+    ['pointerdown', 'mousedown', 'wheel', 'touchstart', 'keydown'].forEach(ev => {
+      window.removeEventListener(ev, unlockAudio);
+    });
+  };
+  ['pointerdown', 'mousedown', 'wheel', 'touchstart', 'keydown'].forEach(ev => {
+    window.addEventListener(ev, unlockAudio, { passive: true });
+  });
+}
+
+/**
+ * Synthesizes the exact Arcade theme sound from @rexa-developer/tiks
+ * Uses highpass-filtered white noise (cutoff at 2800 Hz) with a fast 7.5ms envelope.
+ */
+function playArcadeSound() {
+  const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+  if (now - lastArcadeSoundTime < ARCADE_SOUND_THROTTLE_MS) return;
+  lastArcadeSoundTime = now;
+
+  try {
+    const ctx = getGalleryAudioContext();
+    if (!ctx) return;
+    const t = ctx.currentTime + 0.002;
+    const duration = 0.0075; // 7.5ms
+
+    // 1. Generate White Noise Buffer
+    const bufferSize = Math.floor(ctx.sampleRate * 0.02);
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = Math.random() * 2 - 1;
+    }
+
+    const noise = ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    // 2. Highpass Filter (Arcade brightness: 2800 Hz)
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'highpass';
+    filter.frequency.setValueAtTime(2800, t);
+
+    // 3. Fast Volume Envelope
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.001, t);
+    gain.gain.linearRampToValueAtTime(0.28, t + 0.002);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(ctx.destination);
+
+    noise.start(t);
+    noise.stop(t + duration);
+  } catch (e) {}
+}
+
+const playArcadeHoverSound = playArcadeSound;
+
+/**
+ * Centralized gallery navigation function
+ * Updates galleryScrollIndex, triggers arcade sound effect, and updates layout
+ */
+function navigateGallery(direction, targetIndex = null) {
+  const total = GALLERY_DATA.length;
+  if (!total) return;
+
+  const prevIndex = galleryScrollIndex;
+  if (targetIndex !== null) {
+    if (targetIndex === galleryScrollIndex) return;
+    galleryScrollIndex = (targetIndex % total + total) % total;
+  } else {
+    galleryScrollIndex = (galleryScrollIndex + direction) % total;
+    if (galleryScrollIndex < 0) galleryScrollIndex += total;
+  }
+
+  if (galleryScrollIndex !== prevIndex) {
+    playArcadeSound();
+    updateCarouselLayout();
+  }
+}
+
 // Support both edits_gallery_media.js (Primary) and data/gallery.js (Legacy fallback)
 const rawGallery = (typeof EDITS_GALLERY_MEDIA !== 'undefined' && Array.isArray(EDITS_GALLERY_MEDIA) && EDITS_GALLERY_MEDIA.length > 0)
   ? EDITS_GALLERY_MEDIA
@@ -662,13 +769,17 @@ function initCarousel() {
       <div class="carousel-item-side-bar"></div>
     `;
 
+    item.addEventListener('mouseenter', () => {
+      playArcadeHoverSound();
+    });
+
     item.addEventListener('click', (e) => {
       e.stopPropagation();
       if (galleryScrollIndex === index && itemData.id) {
         openIncidentModal(itemData.id);
       } else {
-        galleryScrollIndex = index;
-        updateCarouselLayout();
+        const dir = index > galleryScrollIndex ? 1 : -1;
+        navigateGallery(dir, index);
       }
     });
 
@@ -737,41 +848,89 @@ window.addEventListener('load', updateCarouselLayout);
 // Carousel Up / Down Buttons
 const btnUp = document.getElementById('btn-carousel-up');
 if (btnUp) {
+  btnUp.addEventListener('mouseenter', () => {
+    playArcadeHoverSound();
+  });
   btnUp.addEventListener('click', () => {
-    galleryScrollIndex = (galleryScrollIndex - 1 + GALLERY_DATA.length) % GALLERY_DATA.length;
-    updateCarouselLayout();
+    navigateGallery(-1);
   });
 }
 
 const btnDown = document.getElementById('btn-carousel-down');
 if (btnDown) {
+  btnDown.addEventListener('mouseenter', () => {
+    playArcadeHoverSound();
+  });
   btnDown.addEventListener('click', () => {
-    galleryScrollIndex = (galleryScrollIndex + 1) % GALLERY_DATA.length;
-    updateCarouselLayout();
+    navigateGallery(1);
   });
 }
-
 
 // Carousel Mousewheel Event with Cooldown Throttle
 let wheelCooldown = false;
 const viewportEl = document.getElementById('carousel-viewport');
-if (viewportEl) {
-  viewportEl.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    if (wheelCooldown) return;
+const galleryPanelEl = document.querySelector('.right-gallery-panel');
 
-    if (e.deltaY > 0) {
-      galleryScrollIndex = (galleryScrollIndex + 1) % GALLERY_DATA.length;
-      updateCarouselLayout();
-    } else if (e.deltaY < 0) {
-      galleryScrollIndex = (galleryScrollIndex - 1 + GALLERY_DATA.length) % GALLERY_DATA.length;
-      updateCarouselLayout();
-    }
+function handleGalleryWheel(e) {
+  e.preventDefault();
+  if (wheelCooldown) return;
 
-    wheelCooldown = true;
-    setTimeout(() => { wheelCooldown = false; }, 160);
-  }, { passive: false });
+  const dir = e.deltaY > 0 ? 1 : -1;
+  navigateGallery(dir);
+
+  wheelCooldown = true;
+  setTimeout(() => { wheelCooldown = false; }, 140);
 }
+
+if (viewportEl) {
+  viewportEl.addEventListener('wheel', handleGalleryWheel, { passive: false });
+}
+if (galleryPanelEl) {
+  galleryPanelEl.addEventListener('wheel', handleGalleryWheel, { passive: false });
+}
+
+// Touch swipe support for gallery on mobile / touchscreens
+let touchStartY = 0;
+let touchMoved = false;
+
+if (viewportEl) {
+  viewportEl.addEventListener('touchstart', (e) => {
+    if (e.touches && e.touches.length === 1) {
+      touchStartY = e.touches[0].clientY;
+      touchMoved = false;
+    }
+  }, { passive: true });
+
+  viewportEl.addEventListener('touchmove', (e) => {
+    touchMoved = true;
+  }, { passive: true });
+
+  viewportEl.addEventListener('touchend', (e) => {
+    if (!touchMoved) return;
+    const touchEndY = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientY : touchStartY;
+    const deltaY = touchStartY - touchEndY;
+    if (Math.abs(deltaY) > 28) {
+      navigateGallery(deltaY > 0 ? 1 : -1);
+    }
+  }, { passive: true });
+}
+
+// Keyboard navigation (ArrowUp / ArrowDown) when hovering over the gallery panel
+let isGalleryHovered = false;
+if (galleryPanelEl) {
+  galleryPanelEl.addEventListener('mouseenter', () => { isGalleryHovered = true; });
+  galleryPanelEl.addEventListener('mouseleave', () => { isGalleryHovered = false; });
+}
+window.addEventListener('keydown', (e) => {
+  if (!isGalleryHovered) return;
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    navigateGallery(1);
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    navigateGallery(-1);
+  }
+});
 
 // ── 8. TOOLBAR BUTTONS (RADAR LINES & TIMELINE MODAL) ──────────────────────
 const btnTools = document.getElementById('btn-tools');
