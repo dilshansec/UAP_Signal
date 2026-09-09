@@ -322,7 +322,7 @@ const EDITS_INCIDENT_LOG = [
     images: ["images/incidents/GIMBAL INCIDENT.jpg"]
   },
   {
-    id: "uap-02",
+    id: "uap-19",
 title: "Kumburgaz UFO Incident",
 name: "KUMBURGAZ UFO INCIDENT",
 date: "2007–2009",
