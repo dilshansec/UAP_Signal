@@ -335,8 +335,8 @@ category: "UNRESOLVED",
 type: "UNIDENTIFIED LIGHTS / DISC-LIKE SHAPES",
 description: "Between 2007 and 2009, night watchman Yalçın Yalman recorded unusual lights and disc-like shapes off Kumburgaz, Turkey. Other witnesses also reported sightings. A preliminary TÜBİTAK examination of the 2007 footage could not determine the objects' identity, distance, or size and did not confirm an extraterrestrial origin.",
 source: "Yalçın Yalman recordings / Reported TÜBİTAK preliminary examination",
-image: "images/incidents/KUMBURGAZ_UFO_INCIDENT.jpg",
-images: ["images/incidents/KUMBURGAZ_UFO_INCIDENT.jpg"]
+image: "images/incidents/yalcin-yalman-istanbul-kumburgaz-1.jpg",
+images: ["images/incidents/yalcin-yalman-istanbul-kumburgaz-1.jpg"]
     
   },
   {
