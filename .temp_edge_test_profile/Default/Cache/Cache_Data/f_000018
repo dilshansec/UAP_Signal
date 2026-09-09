@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>unknown-signal</title>
+  
+  <!-- Typography & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- D3.js and TopoJSON Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Cinematic Entry Stylesheet -->
+  <link rel="stylesheet" href="entry.css">
+</head>
+<body class="entry-active">
+  <!-- =========================================================================
+       UNKNOWN SIGNAL - CINEMATIC ENTRY / ACCESS RESTRICTED OVERLAY
+       ========================================================================= -->
+  <div id="entry-overlay" class="entry-overlay" role="dialog" aria-modal="true" aria-label="Security Access Clearance" tabindex="0">
+    <!-- Blurred Background Image Layer (User Uploaded Dashboard) -->
+    <div class="entry-bg-image"></div>
+    
+    <!-- Dark Classified Atmosphere Backdrop -->
+    <div class="entry-backdrop"></div>
+    <div class="entry-scanlines"></div>
+    <div class="entry-sweep"></div>
+
+    <!-- Hazard Caution Tape Barrier Strips -->
+    <div class="hazard-tape tape-1">
+      <div class="tape-track">
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+      </div>
+    </div>
+
+    <div class="hazard-tape tape-2">
+      <div class="tape-track">
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+      </div>
+    </div>
+
+    <div class="hazard-tape tape-3">
+      <div class="tape-track">
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+      </div>
+    </div>
+
+    <div class="hazard-tape tape-4">
+      <div class="tape-track">
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+      </div>
+    </div>
+
+    <!-- Central Classified Security Access Card -->
+    <div class="restricted-card" id="restricted-card">
+      <div class="card-tech-header">
+        <span class="tech-id">UNKNOWN SIGNAL // PROTOCOL 9-X</span>
+        <span class="tech-badge">LVL-7 AUTHORIZATION</span>
+      </div>
+
+      <div class="restriction-icon" id="restriction-icon">
+        <div class="icon-circle">
+          <span class="icon-bar"></span>
+          <span class="icon-check">✓</span>
+        </div>
+      </div>
+
+      <h1 class="card-heading" id="card-heading">ACCESS RESTRICTED</h1>
+      <div class="card-subtext" id="card-subtext">CLICK ANYWHERE // AUTHENTICATE</div>
+
+      <!-- Authentication Real-Time Terminal -->
+      <div class="card-terminal" id="card-terminal">
+        <div class="terminal-line" id="term-line-1">&gt; CLEARANCE REQUIRED // STANDBY</div>
+        <div class="terminal-line" id="term-line-2"></div>
+      </div>
+
+      <div class="card-tech-footer">
+        <span>SYSTEM SECURITY PROTOCOL</span>
+        <span>CLEARANCE LEVEL 7</span>
+      </div>
+    </div>
+
+    <!-- Technical Skip Option -->
+    <button class="skip-entry" id="skip-entry" title="Skip Intro">SKIP //</button>
+  </div>
+
+  <!-- =========================================================================
+       FUTURISTIC CYBER / HUD GLITCH TRANSITION OVERLAY
+       ========================================================================= -->
+  <div id="cyber-glitch-overlay" class="cyber-glitch-overlay" aria-hidden="true">
+    <div class="glitch-blackout"></div>
+    <div class="glitch-scanlines"></div>
+    <div class="glitch-slice slice-1"></div>
+    <div class="glitch-slice slice-2"></div>
+    <div class="glitch-slice slice-3"></div>
+    <div class="glitch-badge">
+      <span class="glitch-badge-dot"></span>
+      <span class="glitch-badge-text">// SIGNAL ACQUIRED //</span>
+      <span class="glitch-badge-sub">INTERFACE SYNC // SYSTEM ONLINE</span>
+    </div>
+  </div>
+
+  <!-- Mobile Restricted Interface Warning Overlay (Past Mobile Screen) -->
+  <div id="mobile-warning" class="mobile-warning">
+    <!-- Screen Flash Warning Vignette -->
+    <div class="mobile-flash-overlay" id="mobile-flash-overlay"></div>
+
+    <!-- Hazard Tape Barrier Strips -->
+    <div class="tape-strip tape-diagonal-top">
+      <div class="tape-track">
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+      </div>
+    </div>
+    <div class="tape-strip tape-diagonal-1">
+      <div class="tape-track">
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+      </div>
+    </div>
+    <div class="tape-strip tape-diagonal-2">
+      <div class="tape-track">
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+      </div>
+    </div>
+    <div class="tape-strip tape-diagonal-bottom">
+      <div class="tape-track">
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+        <span>ACCESS RESTRICTED</span>
+      </div>
+    </div>
+
+    <!-- Shockwave Pulse Ring Effect -->
+    <div class="mobile-pulse-ring" id="mobile-pulse-ring"></div>
+
+    <!-- Center Classification Badge -->
+    <div class="restricted-card" id="mobile-restricted-card">
+      <div class="card-inner-border">
+        <div class="restricted-icon">
+          <span class="restricted-bar"></span>
+        </div>
+        <h2 class="restricted-heading">ACCESS RESTRICTED</h2>
+        <div class="restricted-sub" id="mobile-restricted-sub">CLICK ANYWHERE &middot; AUTHENTICATE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MAIN HEADER (LEVEL 1: BRANDING, PAGE TITLE, CLOCK & SYSTEM STATUS)
+       ========================================================================= -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-brand">⬡ UNKNOWN-SIGNAL</span>
+      <span class="brand-badge">SECURE // LVL-7</span>
+    </div>
+
+    <div class="topbar-center">
+      <div class="topbar-title-bracket bracket-left">[</div>
+      <h1 class="topbar-page-title">GLOBAL UAP INCIDENT MONITOR</h1>
+      <div class="topbar-title-bracket bracket-right">]</div>
+    </div>
+
+    <div class="topbar-right">
+      <!-- Top-Right Futuristic Navigation Tabs -->
+      <nav class="nav-tabs" aria-label="Main Navigation">
+        <button type="button" id="tab-map" class="nav-tab active" title="Switch to Global Incident Map">
+          <span class="nav-tab-icon">◈</span>
+          <span class="nav-tab-text">INCIDENT MAP</span>
+        </button>
+        <button type="button" id="tab-scientists" class="nav-tab" title="Switch to Missing & Deceased Scientists">
+          <span class="nav-tab-icon">⬡</span>
+          <span class="nav-tab-text">SCIENTIST FILES</span>
+        </button>
+      </nav>
+
+      <div class="topbar-sys-status">
+        <i class="dot-green"></i>
+        <span class="sys-label">SYS: ONLINE</span>
+      </div>
+      <div class="topbar-clock-box">
+        <span id="clock-display" class="clock-display">--:--:-- UTC</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       SECONDARY STATUS BAR (LEVEL 2: TELEMETRY & SUBSYSTEM STATUS)
+       ========================================================================= -->
+  <div class="subbar" id="subbar-map">
+    <div class="subbar-section subbar-left">
+      <div class="subbar-item">
+        <i class="dot-pulse"></i>
+        <span class="subbar-label">RADAR:</span>
+        <span class="subbar-val val-orange">ACTIVE</span>
+      </div>
+      <span class="subbar-sep">|</span>
+      <div class="subbar-item">
+        <span class="subbar-label">INCIDENTS:</span>
+        <span id="count-display" class="subbar-val val-orange">18 INCIDENTS</span>
+      </div>
+    </div>
+
+    <div class="subbar-section subbar-center">
+      <div class="subbar-item">
+        <span class="subbar-label">TELEMETRY SENSORS:</span>
+        <span class="subbar-val val-cyan">OPTICAL / INFRARED / RADAR</span>
+      </div>
+    </div>
+
+    <div class="subbar-section subbar-right">
+      <div class="subbar-item">
+        <i class="dot-green"></i>
+        <span class="subbar-label">ORBITAL TRACKING:</span>
+        <span class="subbar-val val-cyan">ONLINE (GEO-SYNC)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="subbar" id="subbar-scientists" style="display: none;">
+    <div class="subbar-section subbar-left">
+      <div class="subbar-item">
+        <i class="dot-pulse"></i>
+        <span class="subbar-label">PERSONNEL ARCHIVE:</span>
+        <span class="subbar-val val-orange">CLASSIFIED // LEVEL 7</span>
+      </div>
+      <span class="subbar-sep">|</span>
+      <div class="subbar-item">
+        <span class="subbar-label">RECORDED LOSSES:</span>
+        <span class="subbar-val val-orange">12 DOSSIERS</span>
+      </div>
+    </div>
+
+    <div class="subbar-section subbar-center">
+      <div class="subbar-item">
+        <span class="subbar-label">INVESTIGATION METROLOGY:</span>
+        <span class="subbar-val val-cyan">UNEXPLAINED LOSS ANALYSIS</span>
+      </div>
+    </div>
+
+    <div class="subbar-section subbar-right">
+      <div class="subbar-item">
+        <i class="dot-green"></i>
+        <span class="subbar-label">ARCHIVE STATUS:</span>
+        <span class="subbar-val val-cyan">ENCRYPTED &amp; GEO-LOCKED</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Viewport: View 1 (Global Incident Map) -->
+  <div class="main site-view active" id="view-map">
+    <!-- Left Incident Log Panel -->
+    <div class="left-panel">
+      <div class="panel-header">
+        INCIDENT LOG 
+        <span id="filter-count">ALL</span>
+      </div>
+      <div class="search-box">
+        <input id="search-input" type="text" placeholder="// SEARCH INCIDENTS...">
+      </div>
+      <div id="incident-list" class="incident-list"></div>
+      <div class="stat-bar">
+        <div>TOTAL LOGGED: <span id="stat-total">18</span></div>
+        <div>SENSOR: <span>ACTIVE</span></div>
+      </div>
+    </div>
+
+    <!-- Center Interactive Map Area -->
+    <div class="map-area" id="map-area">
+      <div class="scanlines"></div>
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+      <div class="crosshair-x"></div>
+      <div class="crosshair-y"></div>
+
+      <!-- Map Toolbar Controls -->
+      <div class="zoom-controls">
+        <button class="zoom-btn" id="btn-zoom-in" title="Zoom In">+</button>
+        <button class="zoom-btn" id="btn-zoom-out" title="Zoom Out">−</button>
+        <button class="zoom-btn zoom-reset" id="btn-reset" title="Reset Map View">RST</button>
+        <button class="tool-btn" id="btn-tools" title="Toggle Connection Lines">CL</button>
+        <button class="timeline-btn" id="btn-timeline" title="Toggle Incident Timeline Chart">TL</button>
+      </div>
+      <div class="zoom-level" id="zoom-lvl">1.0x</div>
+
+      <!-- HUD Radar Scanner Widget (Top-Right Map Area) -->
+      <div class="map-radar-widget" id="map-radar-widget" aria-label="Tactical Radar Scanner">
+        <div class="radar-frame">
+          <div class="radar-display">
+            <!-- Rotating Sweep Sector & Leading Beam -->
+            <div class="radar-sweep">
+              <div class="radar-sweep-beam"></div>
+            </div>
+
+            <!-- Scope Rings, Crosshairs, Center Hub & Target Blips -->
+            <svg class="radar-svg" viewBox="0 0 80 80" width="80" height="80">
+              <defs>
+                <radialGradient id="radar-scope-grad" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#ff6b1a" stop-opacity="0.09" />
+                  <stop offset="60%" stop-color="#ff4411" stop-opacity="0.03" />
+                  <stop offset="100%" stop-color="#040810" stop-opacity="0.65" />
+                </radialGradient>
+              </defs>
+
+              <!-- Radar Scope Fill -->
+              <circle cx="40" cy="40" r="38" fill="url(#radar-scope-grad)" />
+
+              <!-- Concentric Radar Rings -->
+              <circle class="radar-ring radar-ring-3" cx="40" cy="40" r="38" />
+              <circle class="radar-ring radar-ring-2" cx="40" cy="40" r="26" />
+              <circle class="radar-ring radar-ring-1" cx="40" cy="40" r="14" />
+
+              <!-- Primary Crosshair Lines -->
+              <line class="radar-crosshair" x1="2" y1="40" x2="78" y2="40" />
+              <line class="radar-crosshair" x1="40" y1="2" x2="40" y2="78" />
+
+              <!-- Diagonal Angle Guides -->
+              <line class="radar-crosshair-sub" x1="13" y1="13" x2="67" y2="67" />
+              <line class="radar-crosshair-sub" x1="67" y1="13" x2="13" y2="67" />
+
+              <!-- Target Blips (Matching Reference Image Layout) -->
+              <g class="radar-blip blip-alpha">
+                <circle class="blip-ping" cx="54" cy="20" r="5" />
+                <circle class="blip-dot" cx="54" cy="20" r="2.8" />
+              </g>
+
+              <g class="radar-blip blip-beta">
+                <circle class="blip-ping" cx="25" cy="55" r="4.2" />
+                <circle class="blip-dot" cx="25" cy="55" r="2.2" />
+              </g>
+
+              <g class="radar-blip blip-gamma">
+                <circle class="blip-ping" cx="35" cy="24" r="3.8" />
+                <circle class="blip-dot" cx="35" cy="24" r="1.7" />
+              </g>
+
+              <!-- Center Hub -->
+              <circle class="radar-center-outer" cx="40" cy="40" r="4.2" />
+              <circle class="radar-center-dot" cx="40" cy="40" r="1.6" />
+            </svg>
+          </div>
+          
+          <div class="radar-meta-bar">
+            <span class="radar-meta-beacon"></span>
+            <span class="radar-meta-title">RADAR SCAN</span>
+            <span class="radar-meta-tag">TRACKING</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main World Map Canvas -->
+      <svg id="world-map"></svg>
+
+      <!-- D3 Timeline Modal Popup -->
+      <div id="timeline-popup" class="timeline-popup">
+        <div class="timeline-box">
+          <div class="timeline-box-header">
+            <div class="timeline-box-title">UAP INCIDENT TIMELINE 1945 - 2026</div>
+            <button class="timeline-close" id="timeline-close">X</button>
+          </div>
+          <div class="timeline-chart-area">
+            <div id="timeline-svg-wrap" class="timeline-svg-wrap"></div>
+          </div>
+          <div id="timeline-stats" class="timeline-stats"></div>
+        </div>
+      </div>
+
+      <!-- Loading Overlay -->
+      <div id="loading-overlay">
+        <div class="ld-text">LOADING WORLD MAP</div>
+        <div class="ld-sub">FETCHING GEOGRAPHIC DATA...</div>
+      </div>
+
+      <!-- Map Legend & Coords -->
+      <div class="legend">
+        <div class="legend-item">
+          <div class="leg-dot" style="background: #e8520a;"></div> UNRESOLVED
+        </div>
+        <div class="legend-item">
+          <div class="leg-dot" style="background: #2aff8a;"></div> CONFIRMED
+        </div>
+        <div class="legend-item">
+          <div class="leg-dot" style="background: #ff4040;"></div> CLASSIFIED
+        </div>
+      </div>
+      <div id="coords-display" class="coords">LAT: 00.000 | LNG: 000.000</div>
+      
+      <!-- Pinned Map Tooltip -->
+      <div id="map-tooltip" class="map-tooltip"></div>
+    </div>
+
+    <!-- Right Side Vertical CoverFlow Media Gallery Panel -->
+    <div class="right-gallery-panel">
+      <div class="panel-header">
+        GALLERY MEDIA
+        <span id="gallery-count">9 PHOTOS</span>
+      </div>
+      <div class="carousel-arrow" id="btn-carousel-up" title="Previous Photo">
+        <div class="arrow-box">▲</div>
+      </div>
+      <div class="carousel-viewport" id="carousel-viewport">
+        <div class="carousel-track" id="carousel-track"></div>
+      </div>
+      <div class="carousel-arrow" id="btn-carousel-down" title="Next Photo">
+        <div class="arrow-box">▼</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MISSING & DECEASED SCIENTISTS VIEWPORT (PAGE 2)
+       ========================================================================= -->
+  <div class="main-scientists site-view" id="view-scientists">
+    <!-- Top Classified Banner & Sensitivity Notice Bar -->
+    <div class="sci-top-strip">
+      <div class="sci-breadcrumb-row">
+        <div class="sci-breadcrumb-left">
+          <span class="sci-breadcrumb-prefix">//</span>
+          <span class="sci-breadcrumb">DATABASE &gt; PERSONNEL &gt; MISSING &amp; DECEASED &gt; ALL RECORDS</span>
+        </div>
+        <div class="sci-strip-clock">CLASSIFICATION: TOP SECRET // LVL-7</div>
+      </div>
+
+      <div class="sci-title-header">
+        <div class="sci-title-left">
+          <h2 class="sci-page-heading">MISSING &amp; DECEASED SCIENTISTS</h2>
+          <div class="sci-page-subtitle">
+            <span class="sci-sub-dot">●</span> 12 CASES &middot; RESEARCHERS &middot; UNEXPLAINED LOSSES &middot; GLOBAL SURVEILLANCE
+          </div>
+        </div>
+        <div class="sci-title-right">
+          <span class="sci-tag-secure">FED-ARCHIVE // ACTIVE INVESTIGATION</span>
+        </div>
+      </div>
+
+      <!-- Red/Orange Sensitivity Notice Banner -->
+      <div class="sci-sensitivity-notice">
+        <div class="sci-notice-icon">⚠</div>
+        <div class="sci-notice-content">
+          <span class="sci-notice-title">SENSITIVITY NOTICE // LEVEL 3 CLEARANCE REQUIRED</span>
+          <span class="sci-notice-body">All records contain unverified intelligence, anomalous telemetry, and classified incident reports. Discretion advised.</span>
+        </div>
+        <div class="sci-notice-badge">RESTRICTED DOSSIERS</div>
+      </div>
+
+      <!-- Filter, Search & Sort Control Toolbar -->
+      <div class="sci-toolbar">
+        <div class="sci-filter-group" role="tablist" aria-label="Scientist Filter Categories">
+          <button type="button" class="sci-filter-btn active" data-filter="ALL">
+            ALL <span id="sci-count-all" class="filter-num">(12)</span>
+          </button>
+          <button type="button" class="sci-filter-btn" data-filter="DECEASED">
+            DECEASED <span id="sci-count-deceased" class="filter-num">(7)</span>
+          </button>
+          <button type="button" class="sci-filter-btn" data-filter="MISSING">
+            MISSING <span id="sci-count-missing" class="filter-num">(5)</span>
+          </button>
+          <button type="button" class="sci-filter-btn" data-filter="RESTRICTED">
+            RESTRICTED <span id="sci-count-restricted" class="filter-num">(7)</span>
+          </button>
+        </div>
+
+        <div class="sci-search-group">
+          <div class="sci-search-wrap">
+            <span class="sci-search-icon">⌕</span>
+            <input type="text" id="sci-search-input" placeholder="// SEARCH BY NAME, FIELD, OR YEAR..." autocomplete="off">
+          </div>
+          <div class="sci-sort-wrap">
+            <select id="sci-sort-select" aria-label="Sort Scientist Dossiers">
+              <option value="recent">SORT: RECENT FIRST</option>
+              <option value="oldest">SORT: OLDEST FIRST</option>
+              <option value="alpha">SORT: NAME (A-Z)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Split View: Left List & Right Detail Panel -->
+    <div class="sci-body-split">
+      <!-- Left Subject Register Column -->
+      <div class="sci-left-panel">
+        <div class="sci-panel-header">
+          <span>CLASSIFIED PERSONNEL REGISTER</span>
+          <span class="sci-panel-tag">SYNC ACTIVE</span>
+        </div>
+        <div id="scientist-list-items" class="sci-list-scroll">
+          <!-- Dynamically populated by scientists.js -->
+        </div>
+      </div>
+
+      <!-- Right Main Dossier Detail Column -->
+      <div class="sci-right-panel">
+        <div id="scientist-detail-card" class="sci-detail-viewport">
+          <!-- Dynamically populated by scientists.js -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Minimal Bottom System Footer -->
+  <footer class="bottombar">
+    <div class="bottombar-left">
+      <span class="bottombar-bullet">■</span>
+      <span class="bottombar-text">UNKNOWN-SIGNAL // CLASSIFIED SURVEILLANCE NETWORK &middot; PROTOCOL 9-X</span>
+    </div>
+    <div class="bottombar-right">
+      <span class="bottombar-status-tag">DEFCON-2 NORMALIZED</span>
+    </div>
+  </footer>
+
+  <!-- Incident Detail Modal Popup -->
+  <div id="incident-modal" class="incident-modal">
+    <div class="modal-box">
+      <button class="modal-close" id="modal-close">X</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Incident, Gallery & Scientists Datasets -->
+  <script src="data/incidents.js"></script>
+  <script src="data/gallery.js"></script>
+  <script src="data/scientists.js"></script>
+
+  <!-- Application Engine Scripts -->
+  <script src="app.js"></script>
+  <script src="scientists.js"></script>
+
+  <!-- Interactive Cinematic Entry Controller -->
+  <script src="entry.js"></script>
+
+  <!-- Mobile Restriction Interaction Handler (Past Mobile Screen) -->
+  <script>
+    (function() {
+      const mobileWarning = document.getElementById('mobile-warning');
+      const restrictedCard = document.getElementById('mobile-restricted-card');
+      const restrictedSub = document.getElementById('mobile-restricted-sub');
+      const pulseRing = document.getElementById('mobile-pulse-ring');
+      const flashOverlay = document.getElementById('mobile-flash-overlay');
+
+      if (!mobileWarning || !restrictedCard || !restrictedSub) return;
+
+      let timer = null;
+      let lastTapTime = 0;
+
+      // Synthetic Classified Audio Denial Tone (Zero external dependencies)
+      function playDenialBeep() {
+        try {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContextClass) return;
+          if (!window.__mobAudioCtx) {
+            window.__mobAudioCtx = new AudioContextClass();
+          }
+          const ctx = window.__mobAudioCtx;
+          if (ctx.state === 'suspended') {
+            ctx.resume();
+          }
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(110, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.14);
+
+          gain.gain.setValueAtTime(0.18, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.14);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.15);
+        } catch (e) {
+          // Audio fails gracefully if browser restricts
+        }
+      }
+
+      function triggerMobileDenial(e) {
+        const now = Date.now();
+        if (now - lastTapTime < 250) return; // Prevent double trigger from touch+click
+        lastTapTime = now;
+
+        // 1. Trigger Card Shake Animation
+        restrictedCard.classList.remove('denied-shake');
+        void restrictedCard.offsetWidth; // force DOM reflow
+        restrictedCard.classList.add('denied-shake');
+
+        // 2. Trigger Expanding Shockwave Pulse Ring Effect
+        if (pulseRing) {
+          pulseRing.classList.remove('pulse-active');
+          void pulseRing.offsetWidth;
+          pulseRing.classList.add('pulse-active');
+        }
+
+        // 3. Trigger Screen Perimeter Flash Effect
+        if (flashOverlay) {
+          flashOverlay.classList.remove('flash-active');
+          void flashOverlay.offsetWidth;
+          flashOverlay.classList.add('flash-active');
+        }
+
+        // 4. Update Subtext Feedback
+        restrictedSub.textContent = '[ AUTH FAILED // DESKTOP TERMINAL REQUIRED ]';
+        restrictedSub.style.color = '#ff3366';
+
+        // 5. Tactile Haptic Vibration for Mobile Devices
+        try {
+          if (navigator.vibrate) {
+            navigator.vibrate([45, 30, 45]);
+          }
+        } catch (err) {}
+
+        // 6. Play Micro Denial Sound Effect
+        playDenialBeep();
+
+        // 7. Reset Subtext after delay
+        clearTimeout(timer);
+        timer = setTimeout(function() {
+          restrictedSub.innerHTML = 'CLICK ANYWHERE &middot; AUTHENTICATE';
+          restrictedSub.style.color = '#ff7597';
+        }, 2200);
+      }
+
+      // Support pointerdown, touchstart, and click for instant response across all devices
+      mobileWarning.addEventListener('pointerdown', triggerMobileDenial, { passive: true });
+      mobileWarning.addEventListener('click', triggerMobileDenial);
+    })();
+  </script>
+</body>
+</html>

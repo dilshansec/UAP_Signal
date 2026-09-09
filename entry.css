@@ -1,0 +1,972 @@
+/* ==========================================================================
+   UNKNOWN SIGNAL - CINEMATIC ENTRY / ACCESS RESTRICTED SEQUENCE
+   File: entry.css
+   ========================================================================== */
+
+/* ── 1. BODY & SITE SUPPRESSION (WHILE ENTRY IS ACTIVE) ───────────────────── */
+body.entry-active {
+  overflow: hidden !important;
+  height: 100vh !important;
+  width: 100vw !important;
+}
+
+body.entry-active .topbar,
+body.entry-active .secondary-bar,
+body.entry-active .main,
+body.entry-active .bottombar {
+  filter: blur(4px) brightness(0.7) saturate(0.85);
+  opacity: 0.45;
+  transform: scale(1.01);
+  pointer-events: none !important;
+  user-select: none !important;
+  transition: filter 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Smooth transition when unblurred */
+.topbar,
+.secondary-bar,
+.main,
+.bottombar {
+  transition: filter 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── 2. ENTRY OVERLAY WRAPPER ─────────────────────────────────────────────── */
+.entry-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.entry-overlay.fade-out {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Blurred Background Image Layer (1st User Uploaded Image) */
+.entry-bg-image {
+  position: absolute;
+  inset: -15px;
+  background-image: url('images/entry-bg.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  filter: blur(3.5px) brightness(1.0);
+  transform: scale(1.03);
+  pointer-events: none;
+  z-index: 8990;
+}
+
+/* Dark Classified Atmosphere Backdrop (z-index 8995) */
+.entry-backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(2, 6, 14, 0.1) 0%, rgba(1, 3, 8, 0.45) 100%);
+  pointer-events: none;
+  z-index: 8995;
+}
+
+/* Subtle CRT Scanline overlay */
+.entry-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.18) 0px,
+    rgba(0, 0, 0, 0.18) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 8996;
+}
+
+/* Subtle sweep line across screen */
+.entry-sweep {
+  position: absolute;
+  top: -20%;
+  left: 0;
+  width: 100%;
+  height: 15%;
+  background: linear-gradient(180deg, transparent, rgba(0, 229, 255, 0.06), transparent);
+  animation: entrySweepScan 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes entrySweepScan {
+  0% { transform: translateY(-100%); }
+  50% { transform: translateY(800%); }
+  100% { transform: translateY(-100%); }
+}
+
+/* ── 3. CAUTION HAZARD TAPE STRIPS (z-index 9010) ─────────────────────────── */
+.hazard-tape {
+  position: absolute;
+  left: -35vw;
+  width: 170vw;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  z-index: 9010;
+  background: repeating-linear-gradient(
+    -55deg,
+    #f5b800 0px,
+    #f5b800 18px,
+    #11141a 18px,
+    #11141a 36px
+  );
+  box-shadow: 
+    0 16px 45px rgba(0, 0, 0, 0.92),
+    0 4px 14px rgba(0, 0, 0, 0.75),
+    inset 0 1px 1px rgba(255, 255, 255, 0.35),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.85);
+  pointer-events: none;
+  transform-origin: center center;
+  transition: transform 1.05s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.9s ease;
+  will-change: transform, opacity;
+}
+
+/* Continuous Tape Text Track */
+.tape-track {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  gap: 40px;
+  animation: tapeDrift 30s linear infinite;
+  will-change: transform;
+}
+
+.tape-track span {
+  font-family: 'Orbitron', 'Rajdhani', monospace, sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 4.5px;
+  color: #06080d;
+  background: rgba(245, 184, 0, 0.92);
+  padding: 3px 16px;
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.7);
+  display: inline-block;
+  user-select: none;
+}
+
+@keyframes tapeDrift {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-350px); }
+}
+
+/* Tape Positions & Angles (Matching User Reference Image) */
+.tape-1 {
+  top: 24%;
+  transform: rotate(-15deg);
+}
+
+.tape-2 {
+  top: 49%;
+  transform: rotate(20deg);
+}
+
+.tape-3 {
+  top: 72%;
+  transform: rotate(-10deg);
+}
+
+.tape-4 {
+  top: 52%;
+  transform: rotate(34deg);
+}
+
+/* Tape Exit Animations (Staggered Translations Off-Screen) */
+.entry-overlay.tapes-exit .tape-1 {
+  transform: rotate(-15deg) translateX(-180vw) !important;
+  opacity: 0.3;
+  transition-delay: 0ms !important;
+}
+
+.entry-overlay.tapes-exit .tape-2 {
+  transform: rotate(20deg) translateX(180vw) !important;
+  opacity: 0.3;
+  transition-delay: 110ms !important;
+}
+
+.entry-overlay.tapes-exit .tape-3 {
+  transform: rotate(-10deg) translateX(-180vw) !important;
+  opacity: 0.3;
+  transition-delay: 200ms !important;
+}
+
+.entry-overlay.tapes-exit .tape-4 {
+  transform: rotate(34deg) translateX(180vw) !important;
+  opacity: 0.3;
+  transition-delay: 290ms !important;
+}
+
+/* ── 4. CENTRAL ACCESS RESTRICTED PANEL (z-index 9020) ─────────────────────── */
+.restricted-card {
+  position: relative;
+  z-index: 9020;
+  width: 470px;
+  max-width: 90vw;
+  background: rgba(7, 11, 18, 0.94);
+  border: 2px solid #ff1758;
+  border-radius: 4px;
+  box-shadow: 
+    0 0 35px rgba(255, 23, 88, 0.45),
+    inset 0 0 25px rgba(255, 23, 88, 0.18),
+    0 25px 60px rgba(0, 0, 0, 0.88);
+  padding: 20px 22px 18px;
+  text-align: center;
+  transform: rotate(-5.5deg);
+  transition: border-color 0.4s ease,
+              box-shadow 0.4s ease,
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.5s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* Card Idle Pulse */
+.restricted-card:not(.access-granted):not(.card-exit) {
+  animation: cardIdlePulse 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes cardIdlePulse {
+  0% {
+    box-shadow: 0 0 30px rgba(255, 23, 88, 0.4), inset 0 0 20px rgba(255, 23, 88, 0.15), 0 25px 60px rgba(0, 0, 0, 0.85);
+  }
+  100% {
+    box-shadow: 0 0 45px rgba(255, 23, 88, 0.6), inset 0 0 30px rgba(255, 23, 88, 0.25), 0 30px 70px rgba(0, 0, 0, 0.95);
+  }
+}
+
+/* Card Header Technical Badges */
+.card-tech-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Rajdhani', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: rgba(255, 75, 125, 0.75);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.card-tech-header .tech-badge {
+  background: rgba(255, 23, 88, 0.18);
+  border: 1px solid rgba(255, 23, 88, 0.45);
+  padding: 2px 7px;
+  border-radius: 2px;
+  color: #ff4d79;
+}
+
+/* Restriction Circle Icon (⛔ Style) */
+.restriction-icon {
+  margin: 0 auto 8px;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #ff1758;
+  box-shadow: 0 0 16px rgba(255, 23, 88, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.4s ease, box-shadow 0.4s ease;
+}
+
+.icon-bar {
+  width: 20px;
+  height: 4px;
+  background: #ffffff;
+  border-radius: 2px;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+  transition: all 0.4s ease;
+}
+
+/* Main Heading */
+.card-heading {
+  margin: 0 0 10px;
+  font-family: 'Orbitron', monospace;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: #ff2266;
+  text-shadow: 0 0 16px rgba(255, 34, 102, 0.7);
+  transition: color 0.4s ease, text-shadow 0.4s ease;
+}
+
+/* Interactive Authentication Form */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 0 0 10px;
+  text-align: left;
+}
+
+.auth-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.auth-label {
+  font-family: 'Rajdhani', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #ff7597;
+  text-transform: uppercase;
+}
+
+.auth-input-wrap {
+  display: flex;
+  align-items: center;
+  background: rgba(3, 7, 13, 0.92);
+  border: 1px solid rgba(255, 23, 88, 0.45);
+  border-radius: 3px;
+  padding: 0 10px;
+  height: 31px;
+  box-sizing: border-box;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.auth-input-wrap:focus-within {
+  border-color: #ff3377;
+  box-shadow: 0 0 12px rgba(255, 51, 119, 0.45);
+  background: rgba(5, 10, 18, 0.96);
+}
+
+.auth-prefix {
+  color: #ff3366;
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  font-size: 13px;
+  margin-right: 8px;
+  user-select: none;
+}
+
+.auth-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+  padding: 0;
+  height: 100%;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.auth-input::placeholder {
+  color: rgba(255, 120, 150, 0.38);
+  letter-spacing: 1.2px;
+  font-size: 10.5px;
+}
+
+.auth-input[type="password"] {
+  letter-spacing: 3px;
+}
+
+.auth-input:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Compact Authenticate Button */
+.btn-authenticate {
+  width: 100%;
+  height: 31px;
+  margin-top: 2px;
+  background: rgba(255, 23, 88, 0.15);
+  border: 1px solid rgba(255, 23, 88, 0.6);
+  border-radius: 3px;
+  color: #ff4d79;
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 0 12px rgba(255, 23, 88, 0.18);
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+.btn-authenticate:hover:not(:disabled) {
+  background: rgba(255, 23, 88, 0.32);
+  border-color: #ff3377;
+  color: #ffffff;
+  box-shadow: 0 0 18px rgba(255, 51, 119, 0.55);
+}
+
+.btn-authenticate:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+.btn-authenticate:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Terminal Readout Box (z-index 9030) */
+.card-terminal {
+  min-height: 27px;
+  background: rgba(3, 6, 11, 0.88);
+  border: 1px solid rgba(255, 23, 88, 0.35);
+  border-radius: 3px;
+  padding: 4px 8px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  transition: border-color 0.4s ease;
+}
+
+.terminal-line {
+  font-family: 'Courier New', monospace;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: #ff7597;
+  min-height: 14px;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.terminal-line.cyan {
+  color: #00e5ff !important;
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+}
+
+.terminal-line.error {
+  color: #ff2255 !important;
+  text-shadow: 0 0 10px rgba(255, 34, 85, 0.8);
+}
+
+/* Subtle error pulse on incomplete credentials */
+.restricted-card.auth-error-pulse {
+  animation: cardErrorPulse 0.4s ease;
+  border-color: #ff1144 !important;
+  box-shadow: 0 0 45px rgba(255, 17, 68, 0.7), inset 0 0 25px rgba(255, 17, 68, 0.35) !important;
+}
+
+@keyframes cardErrorPulse {
+  0% { transform: rotate(-5.5deg) scale(1); }
+  35% { transform: rotate(-5.5deg) scale(1.02); }
+  70% { transform: rotate(-5.5deg) scale(0.99); }
+  100% { transform: rotate(-5.5deg) scale(1); }
+}
+
+/* Card Technical Footer */
+.card-tech-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Rajdhani', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.8px;
+  color: rgba(255, 100, 140, 0.6);
+  border-top: 1px solid rgba(255, 23, 88, 0.25);
+  padding-top: 8px;
+  text-transform: uppercase;
+}
+
+/* ── 5. AUTHENTICATION ACTIVE STATE (0ms - 900ms) ─────────────────────────── */
+.restricted-card.authenticating {
+  animation: cardShake 0.35s ease;
+  border-color: #ff3377;
+  box-shadow: 0 0 50px rgba(255, 51, 119, 0.7), inset 0 0 30px rgba(255, 51, 119, 0.3);
+}
+
+@keyframes cardShake {
+  0% { transform: rotate(-5.5deg) translate(0, 0); }
+  20% { transform: rotate(-6deg) translate(-4px, 2px); }
+  40% { transform: rotate(-4.8deg) translate(4px, -2px); }
+  60% { transform: rotate(-5.8deg) translate(-3px, 1px); }
+  80% { transform: rotate(-5.2deg) translate(2px, -1px); }
+  100% { transform: rotate(-5.5deg) translate(0, 0); }
+}
+
+/* ── 6. ACCESS GRANTED STATE (900ms - 1500ms) ─────────────────────────────── */
+.restricted-card.access-granted {
+  border-color: #00e5ff !important;
+  box-shadow: 
+    0 0 50px rgba(0, 229, 255, 0.65),
+    inset 0 0 30px rgba(0, 229, 255, 0.25),
+    0 25px 60px rgba(0, 0, 0, 0.95) !important;
+}
+
+.restricted-card.access-granted .icon-circle {
+  background: #00e5ff !important;
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.9) !important;
+}
+
+.restricted-card.access-granted .icon-bar {
+  display: none !important;
+}
+
+.restricted-card.access-granted .icon-check {
+  display: block !important;
+  color: #02050b;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.icon-check {
+  display: none;
+}
+
+.restricted-card.access-granted .card-heading {
+  color: #00e5ff !important;
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.8) !important;
+}
+
+.restricted-card.access-granted .card-subtext {
+  color: #72f0ff !important;
+  letter-spacing: 3.5px;
+}
+
+.restricted-card.access-granted .card-terminal {
+  border-color: rgba(0, 229, 255, 0.45) !important;
+}
+
+.restricted-card.access-granted .card-tech-header,
+.restricted-card.access-granted .card-tech-footer {
+  color: rgba(0, 229, 255, 0.7) !important;
+}
+
+.restricted-card.access-granted .card-tech-header .tech-badge {
+  background: rgba(0, 229, 255, 0.15) !important;
+  border-color: rgba(0, 229, 255, 0.5) !important;
+  color: #00e5ff !important;
+}
+
+.restricted-card.access-granted .auth-label {
+  color: #00e5ff !important;
+}
+
+.restricted-card.access-granted .auth-input-wrap {
+  border-color: rgba(0, 229, 255, 0.45) !important;
+  background: rgba(3, 14, 22, 0.95) !important;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.2), inset 0 2px 6px rgba(0, 0, 0, 0.6) !important;
+}
+
+.restricted-card.access-granted .auth-prefix {
+  color: #00e5ff !important;
+}
+
+.restricted-card.access-granted .auth-input {
+  color: #72f0ff !important;
+}
+
+.restricted-card.access-granted .btn-authenticate {
+  background: rgba(0, 229, 255, 0.2) !important;
+  border-color: #00e5ff !important;
+  color: #00e5ff !important;
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.5) !important;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.8);
+}
+
+/* ── 7. CARD EXIT ANIMATION (1400ms+) ─────────────────────────────────────── */
+.restricted-card.card-exit {
+  transform: rotate(-5.5deg) scale(1.08) !important;
+  opacity: 0 !important;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.5s ease !important;
+  pointer-events: none !important;
+}
+
+/* ── 8. SKIP BUTTON (z-index 9040) ────────────────────────────────────────── */
+.skip-entry {
+  position: absolute;
+  bottom: 26px;
+  right: 28px;
+  z-index: 9040;
+  background: rgba(5, 10, 18, 0.8);
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  color: rgba(0, 229, 255, 0.7);
+  font-family: 'Rajdhani', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  padding: 8px 16px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-transform: uppercase;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.skip-entry:hover {
+  background: rgba(0, 229, 255, 0.15);
+  border-color: #00e5ff;
+  color: #00e5ff;
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.45);
+  transform: translateY(-1px);
+}
+
+.skip-entry:active {
+  transform: translateY(1px);
+}
+
+/* ── 9. RESPONSIVE DESIGN (MOBILE & TABLET) ───────────────────────────────── */
+@media (max-width: 800px) {
+  #entry-overlay {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .hazard-tape {
+    height: 42px;
+    left: -50vw;
+    width: 200vw;
+  }
+
+  .tape-track {
+    gap: 24px;
+  }
+
+  .tape-track span {
+    font-size: 15px;
+    letter-spacing: 2.5px;
+    padding: 2px 10px;
+  }
+
+  .restricted-card {
+    width: 92vw;
+    padding: 20px 16px 18px;
+    transform: rotate(-4deg);
+  }
+
+  .restricted-card.authenticating {
+    animation: cardShakeMobile 0.35s ease;
+  }
+
+  @keyframes cardShakeMobile {
+    0% { transform: rotate(-4deg) translate(0, 0); }
+    20% { transform: rotate(-4.5deg) translate(-3px, 1px); }
+    40% { transform: rotate(-3.5deg) translate(3px, -1px); }
+    60% { transform: rotate(-4.3deg) translate(-2px, 1px); }
+    80% { transform: rotate(-3.8deg) translate(2px, -1px); }
+    100% { transform: rotate(-4deg) translate(0, 0); }
+  }
+
+  .restricted-card.card-exit {
+    transform: rotate(-4deg) scale(1.06) !important;
+  }
+
+  .card-heading {
+    font-size: 19px;
+    letter-spacing: 2px;
+  }
+
+  .card-subtext {
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+
+  .card-tech-header,
+  .card-tech-footer {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+
+  .card-terminal {
+    padding: 6px 8px;
+    min-height: 32px;
+  }
+
+  .terminal-line {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+
+  .terminal-form {
+    gap: 9px;
+    margin: 12px 0 10px;
+  }
+
+  .field-input-box {
+    padding: 6px 10px;
+    min-height: 34px;
+    font-size: 12px;
+  }
+
+  .btn-authenticate {
+    padding: 8px 12px;
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+
+  .skip-entry {
+    bottom: 16px;
+    right: 16px;
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+}
+
+/* ── 10. ACCESSIBILITY: PREFERS-REDUCED-MOTION ────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .hazard-tape,
+  .tape-track,
+  .entry-sweep,
+  .restricted-card {
+    animation: none !important;
+  }
+
+  .hazard-tape,
+  .restricted-card,
+  .entry-overlay {
+    transition-duration: 0.25s !important;
+  }
+
+  .map-area.map-spawning #world-map,
+  .crt-spawn-overlay {
+    animation: none !important;
+  }
+}
+
+/* ==========================================================================
+   ── 11. OLD TV CRT GLITCH SPAWN EFFECT (MAP SECTION ONLY) ────────────────
+   Feature: Old TV CRT glitch - 2 bright glowing lines start from middle of the
+            map and travel up and down, revealing the world map.
+   Controlled via: ENABLE_SITE_SPAWN_EFFECT in entry.js
+   To completely remove this effect:
+     1. Set ENABLE_SITE_SPAWN_EFFECT = false in entry.js, OR
+     2. Delete this entire Section 11 block.
+   ========================================================================== */
+
+/* Map Section CRT Glitch Overlay */
+.crt-spawn-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 40;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* CRT Screen Radial Flash on initial ignition */
+.crt-screen-flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(0, 229, 255, 0.45) 0%, rgba(0, 229, 255, 0.1) 55%, transparent 75%);
+  opacity: 0;
+  animation: crtFlashPulse 0.36s ease-out forwards;
+}
+
+/* CRT Analog Scanlines Layer */
+.crt-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.55) 0px,
+    rgba(0, 0, 0, 0.55) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  opacity: 0.7;
+  animation: crtScanlineFade 0.7s ease-out forwards;
+}
+
+/* Center Horizontal Igniter Spark (Snappy center line strike before split) */
+.crt-center-spark {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  transform: translateY(-50%) scaleX(0);
+  background: #ffffff;
+  box-shadow: 0 0 16px #ffffff,
+              0 0 35px #00e5ff,
+              0 0 75px #00e5ff,
+              0 0 130px rgba(0, 229, 255, 0.95);
+  transform-origin: center;
+  animation: crtSparkIgnite 0.14s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+/* ── Top Shutter (Closes top half, sweeps UPWARD from center) ── */
+.crt-shutter-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: #03060c;
+  transform: translateY(0);
+  animation: crtShutterUp 0.54s cubic-bezier(0.16, 1, 0.3, 1) 0.12s forwards;
+  will-change: transform;
+}
+
+/* Bright Line 1: Sits on the bottom edge of top shutter, races UP */
+.crt-beam-top {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #ffffff;
+  box-shadow: 0 0 14px #ffffff,
+              0 0 30px #00e5ff,
+              0 0 60px #00e5ff,
+              0 0 100px rgba(0, 229, 255, 0.95),
+              0 2px 25px rgba(0, 229, 255, 0.85);
+  filter: brightness(2);
+}
+
+/* ── Bottom Shutter (Closes bottom half, sweeps DOWNWARD from center) ── */
+.crt-shutter-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: #03060c;
+  transform: translateY(0);
+  animation: crtShutterDown 0.54s cubic-bezier(0.16, 1, 0.3, 1) 0.12s forwards;
+  will-change: transform;
+}
+
+/* Bright Line 2: Sits on the top edge of bottom shutter, races DOWN */
+.crt-beam-bottom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #ffffff;
+  box-shadow: 0 0 14px #ffffff,
+              0 0 30px #00e5ff,
+              0 0 60px #00e5ff,
+              0 0 100px rgba(0, 229, 255, 0.95),
+              0 -2px 25px rgba(0, 229, 255, 0.85);
+  filter: brightness(2);
+}
+
+/* Subtle Old TV Analog Screen Jitter strictly on the World Map SVG */
+.map-area.map-spawning #world-map {
+  animation: crtScreenGlitch 0.62s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  will-change: transform, filter;
+}
+
+/* ── Keyframe Animations for Old TV CRT Glitch ── */
+@keyframes crtSparkIgnite {
+  0% {
+    transform: translateY(-50%) scaleX(0);
+    opacity: 0.3;
+  }
+  60% {
+    transform: translateY(-50%) scaleX(1);
+    opacity: 1;
+    filter: brightness(2.2);
+  }
+  100% {
+    transform: translateY(-50%) scaleX(1);
+    opacity: 0;
+  }
+}
+
+@keyframes crtShutterUp {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes crtShutterDown {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes crtFlashPulse {
+  0% { opacity: 0; }
+  25% { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+
+@keyframes crtScanlineFade {
+  0% { opacity: 0.75; }
+  75% { opacity: 0.4; }
+  100% { opacity: 0; }
+}
+
+@keyframes crtScreenGlitch {
+  0% {
+    transform: scale(0.985);
+    filter: brightness(1.7) contrast(1.25);
+  }
+  18% {
+    transform: scale(0.99) translateX(-4px) skewX(0.4deg);
+    filter: brightness(1.4) contrast(1.15);
+  }
+  38% {
+    transform: scale(0.995) translateX(3px) skewX(-0.3deg);
+    filter: brightness(1.25) contrast(1.1);
+  }
+  62% {
+    transform: scale(1) translateX(-1.5px);
+    filter: brightness(1.1) contrast(1.05);
+  }
+  82% {
+    transform: scale(1) translateX(1px);
+    filter: brightness(1.04);
+  }
+  100% {
+    transform: scale(1) translateX(0);
+    filter: brightness(1) contrast(1);
+  }
+}
+
+
