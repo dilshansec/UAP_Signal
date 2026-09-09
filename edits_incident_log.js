@@ -322,6 +322,24 @@ const EDITS_INCIDENT_LOG = [
     images: ["images/incidents/GIMBAL INCIDENT.jpg"]
   },
   {
+    id: "uap-02",
+title: "Kumburgaz UFO Incident",
+name: "KUMBURGAZ UFO INCIDENT",
+date: "2007–2009",
+year: 2007,
+location: "Yeni Kent, Kumburgaz, Istanbul, Turkey",
+country: "Turkey",
+coords: [41.0358, 28.4418], 
+status: "UNRESOLVED",
+category: "UNRESOLVED",
+type: "UNIDENTIFIED LIGHTS / DISC-LIKE SHAPES",
+description: "Between 2007 and 2009, night watchman Yalçın Yalman recorded unusual lights and disc-like shapes off Kumburgaz, Turkey. Other witnesses also reported sightings. A preliminary TÜBİTAK examination of the 2007 footage could not determine the objects' identity, distance, or size and did not confirm an extraterrestrial origin.",
+source: "Yalçın Yalman recordings / Reported TÜBİTAK preliminary examination",
+image: "images/incidents/KUMBURGAZ_UFO_INCIDENT.jpg",
+images: ["images/incidents/KUMBURGAZ_UFO_INCIDENT.jpg"]
+    
+  },
+  {
     id: "uap-08",
     title: "GoFast Incident",
     name: "GOFAST INCIDENT",
@@ -338,6 +356,7 @@ const EDITS_INCIDENT_LOG = [
     image: "images/incidents/GOFAST INCIDENT.jpg",
     images: ["images/incidents/GOFAST INCIDENT.jpg"]
   }
+  
 ];
 
 // Universal Exports (Browser Window + Node Environments)
