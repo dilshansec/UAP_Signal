@@ -355,6 +355,23 @@ images: ["images/incidents/yalcin-yalman-istanbul-kumburgaz-1.jpg"]
     source: "US Navy ATFLIR Telemetry Logs",
     image: "images/incidents/GOFAST INCIDENT.jpg",
     images: ["images/incidents/GOFAST INCIDENT.jpg"]
+  },
+  {
+    id: "uap-20",
+title: "Ariel School Incident",
+name: "ARIEL SCHOOL INCIDENT",
+date: "1994-09-16",
+year: 1994,
+location: "Ariel School, Ruwa, Zimbabwe",
+country: "Zimbabwe",
+coords: [-17.8615, 31.2913], 
+status: "UNRESOLVED",
+category: "UNRESOLVED",
+type: "REPORTED SILVER CRAFT / HUMANOID FIGURES",
+description: "On September 16, 1994, approximately 62 children at Ariel School reported seeing silver craft and small humanoid figures near the school grounds during morning break. Their accounts were documented through interviews and drawings by researcher Cynthia Hind and later psychiatrist John E. Mack. The incident remains disputed, and an extraterrestrial origin has not been established.",
+source: "Student testimony and drawings / Cynthia Hind and John E. Mack interviews",
+image: "images/incidents/ariel-school-ruwa-childrens-sketches.jpg",
+images: ["images/incidents/ariel-school-ruwa-childrens-sketches.jpg"],
   }
   
 ];
