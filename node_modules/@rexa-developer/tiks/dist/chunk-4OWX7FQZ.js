@@ -1,0 +1,1 @@
+import {g}from'./chunk-OTMYJMEF.js';function n(s){let e=new g;return e.init(s),{click:()=>e.click(),toggle:o=>e.toggle(o),success:()=>e.success(),error:()=>e.error(),warning:()=>e.warning(),hover:()=>e.hover(),pop:()=>e.pop(),swoosh:()=>e.swoosh(),notify:()=>e.notify(),mute:()=>e.mute(),unmute:()=>e.unmute(),setVolume:o=>e.setVolume(o),setTheme:o=>e.setTheme(o)}}export{n as a};

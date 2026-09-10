@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procedural Gear Rotation Sound</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #1a1a1a;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: transform 0.1s, background-color 0.2s;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        button.playing {
+            background-color: #c0392b;
+        }
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+        }
+        label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="gearBtn">Start Gear Mechanism</button>
+
+    <div class="controls">
+        <label>
+            Speed (RPM)
+            <input type="range" id="speedSlider" min="20" max="200" value="90">
+        </label>
+    </div>
+
+    <script>
+        let audioCtx = null;
+        let isPlaying = false;
+        let gearInterval = null;
+        
+        const gearBtn = document.getElementById('gearBtn');
+        const speedSlider = document.getElementById('speedSlider');
+
+        // Main function to play a single mechanical "click/clack" tooth rotation
+        function playGearToothClick(ctx) {
+            const now = ctx.currentTime;
+            
+            // 1. Create a low-frequency hum/thud node (The physical gear mass)
+            const lowOsc = ctx.createOscillator();
+            const lowGain = ctx.createGain();
+            lowOsc.type = 'triangle';
+            lowOsc.frequency.setValueAtTime(65, now); // Low metallic pitch
+            lowOsc.frequency.exponentialRampToValueAtTime(30, now + 0.08);
+            
+            // 2. Create a high-frequency transient node (The click of the interlocking teeth)
+            const highOsc = ctx.createOscillator();
+            const highGain = ctx.createGain();
+            highOsc.type = 'triangle';
+            highOsc.frequency.setValueAtTime(800, now); // Metallic snap pitch
+            highOsc.frequency.exponentialRampToValueAtTime(150, now + 0.03);
+
+            // Configure low-frequency volume envelope
+            lowGain.gain.setValueAtTime(0.4, now);
+            lowGain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+
+            // Configure high-frequency volume envelope (much shorter and snappier)
+            highGain.gain.setValueAtTime(0.3, now);
+            highGain.gain.exponentialRampToValueAtTime(0.01, now + 0.02);
+
+            // Connect nodes together
+            lowOsc.connect(lowGain);
+            highOsc.connect(highGain);
+            
+            lowGain.connect(ctx.destination);
+            highGain.connect(ctx.destination);
+
+            // Start and cleanly stop execution to release memory
+            lowOsc.start(now);
+            lowOsc.stop(now + 0.09);
+            highOsc.start(now);
+            highOsc.stop(now + 0.03);
+        }
+
+        function startMechanism() {
+            if (!audioCtx) {
+                // Initialize the audio context following standard user-interaction security policies
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            isPlaying = true;
+            gearBtn.textContent = "Stop Gear Mechanism";
+            gearBtn.classList.add('playing');
+
+            // Trigger the procedural loop based on slider value
+            function loop() {
+                if (!isPlaying) return;
+                
+                playGearToothClick(audioCtx);
+                
+                // Calculate time dynamic delay between clicks based on current slider speed
+                const speedRpm = speedSlider.value;
+                const teethCount = 8; // Simulating an 8-tooth cog
+                const intervalMs = (60 / (speedRpm * teethCount)) * 1000;
+                
+                gearInterval = setTimeout(loop, intervalMs);
+            }
+            
+            loop();
+        }
+
+        function stopMechanism() {
+            isPlaying = false;
+            gearBtn.textContent = "Start Gear Mechanism";
+            gearBtn.classList.remove('playing');
+            clearTimeout(gearInterval);
+        }
+
+        gearBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                stopMechanism();
+            } else {
+                startMechanism();
+            }
+        });
+    </script>
+</body>
+</html>

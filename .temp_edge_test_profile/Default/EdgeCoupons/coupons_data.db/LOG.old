@@ -1,0 +1,5 @@
+2026/09/08-12:24:54.170 4f88 Creating DB D:\UAP_Signal-main\.temp_edge_test_profile\Default\EdgeCoupons/coupons_data.db since it was missing.
+2026/09/08-12:24:54.178 4f88 Reusing MANIFEST D:\UAP_Signal-main\.temp_edge_test_profile\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/09/08-12:25:02.836 1b40 Level-0 table #5: started
+2026/09/08-12:25:02.841 1b40 Level-0 table #5: 683273 bytes OK
+2026/09/08-12:25:02.845 1b40 Delete type=0 #3
