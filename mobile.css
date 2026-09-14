@@ -257,11 +257,17 @@ body > #map-area.mobile-map-expanded {
   scrollbar-color: #225069 #070c12;
 }
 .fullscreen-incident-row {
-  display: flex; flex-direction: column; gap: 4px; width: 100%; min-height: 76px;
+  display: flex; align-items: center; gap: 9px; width: 100%; min-height: 76px;
   padding: 12px; text-align: left; color: #83aabc; background: transparent;
   border: 0; border-bottom: 1px solid #142936; cursor: pointer;
   font: 500 12px 'Rajdhani', sans-serif;
 }
+.fullscreen-incident-thumbnail {
+  width: 44px; height: 44px; flex: 0 0 44px; object-fit: cover;
+  border: 1px solid #225069; border-radius: 3px; background: #0b1b25;
+}
+.fullscreen-incident-thumbnail[hidden] { display: none; }
+.fullscreen-incident-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; overflow-wrap: anywhere; }
 .fullscreen-incident-row strong { color: #ffab64; font-size: 13px; }
 .fullscreen-incident-row.is-selected { background: #0b2733; box-shadow: inset 3px 0 #00e5ff; }
 .fullscreen-incident-row.is-selected strong { color: #b8e3ff; }

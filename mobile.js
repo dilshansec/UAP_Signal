@@ -154,13 +154,24 @@
       row.type = 'button';
       row.className = 'fullscreen-incident-row';
       row.setAttribute('aria-pressed', 'false');
+      const thumbnail = document.createElement('img');
+      thumbnail.className = 'fullscreen-incident-thumbnail';
+      thumbnail.src = inc.image;
+      thumbnail.alt = '';
+      thumbnail.loading = 'lazy';
+      thumbnail.addEventListener('error', () => {
+        thumbnail.hidden = true;
+      }, { once: true });
+      const info = document.createElement('span');
+      info.className = 'fullscreen-incident-info';
       const name = document.createElement('strong');
       name.textContent = inc.name;
       const date = document.createElement('span');
       date.textContent = inc.date;
       const location = document.createElement('span');
       location.textContent = inc.location;
-      row.append(name, date, location);
+      info.append(name, date, location);
+      row.append(thumbnail, info);
       row.addEventListener('click', () => selectIncident(inc.id));
       list.append(row);
       rows.set(inc.id, row);
