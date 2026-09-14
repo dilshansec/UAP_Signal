@@ -719,6 +719,7 @@ function selectIncident(id) {
 
   // Immediately display the pinned card for the selected incident
   updateSelectedTooltip();
+  document.dispatchEvent(new CustomEvent('incident-selected', { detail: { id } }));
 
   const pos = projection([inc.coords[1], inc.coords[0]]);
   if (pos) {

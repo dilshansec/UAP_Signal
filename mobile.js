@@ -139,9 +139,49 @@
     button.setAttribute('aria-label', 'Open map in landscape fullscreen');
     button.setAttribute('aria-pressed', 'false');
     map.append(button);
+    const panel = document.createElement('aside');
+    panel.className = 'fullscreen-incidents';
+    panel.setAttribute('aria-label', 'All incidents');
+    const heading = document.createElement('h2');
+    heading.textContent = `INCIDENTS · ${VALID_INCIDENTS.length}`;
+    const list = document.createElement('div');
+    list.className = 'fullscreen-incident-list';
+    panel.append(heading, list);
+    map.append(panel);
+    const rows = new Map();
+    for (const inc of [...VALID_INCIDENTS].sort((a, b) => a.year - b.year || a.date.localeCompare(b.date))) {
+      const row = document.createElement('button');
+      row.type = 'button';
+      row.className = 'fullscreen-incident-row';
+      row.setAttribute('aria-pressed', 'false');
+      const name = document.createElement('strong');
+      name.textContent = inc.name;
+      const date = document.createElement('span');
+      date.textContent = inc.date;
+      const location = document.createElement('span');
+      location.textContent = inc.location;
+      row.append(name, date, location);
+      row.addEventListener('click', () => selectIncident(inc.id));
+      list.append(row);
+      rows.set(inc.id, row);
+    }
+    function syncSelection(id) {
+      for (const [rowId, row] of rows) {
+        row.classList.toggle('is-selected', rowId === id);
+        row.setAttribute('aria-pressed', String(rowId === id));
+      }
+      const row = rows.get(id);
+      if (mapFullscreen && row) {
+        // Scroll only the list, including when the fullscreen map is rotated.
+        list.scrollTo({ top: row.offsetTop - list.clientHeight / 2 + row.offsetHeight / 2,
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+      }
+    }
+    document.addEventListener('incident-selected', event => syncSelection(event.detail.id));
     let placeholder;
     let busy = false;
     let savedScroll = 0;
+    let savedIncidents;
     function restore() {
       if (!mapFullscreen) return;
       mapFullscreen = false;
@@ -149,6 +189,9 @@
       map.classList.remove('mobile-map-expanded');
       document.documentElement.classList.remove('map-fullscreen-active');
       placeholder.replaceWith(map);
+      filteredIncidents = savedIncidents;
+      renderIncidentList();
+      renderMarkers();
       button.textContent = '⛶';
       button.setAttribute('aria-label', 'Open map in landscape fullscreen');
       button.setAttribute('aria-pressed', 'false');
@@ -173,12 +216,16 @@
         map.before(placeholder);
         document.body.append(map);
         mapFullscreen = true;
+        savedIncidents = filteredIncidents;
+        filteredIncidents = [...VALID_INCIDENTS];
+        renderMarkers();
         map.classList.remove('mobile-map-boot');
         map.classList.add('mobile-map-expanded');
         document.documentElement.classList.add('map-fullscreen-active');
         button.textContent = '✕';
         button.setAttribute('aria-label', 'Exit fullscreen map');
         button.setAttribute('aria-pressed', 'true');
+        requestAnimationFrame(() => syncSelection(selectedIncidentId));
         try {
           await map.requestFullscreen();
           if (mapFullscreen) await screen.orientation?.lock?.('landscape-secondary');
