@@ -87,7 +87,7 @@ const rawIncidents = (typeof EDITS_INCIDENT_LOG !== 'undefined' && Array.isArray
 const VALID_INCIDENTS = validateIncidents(rawIncidents);
 let filteredIncidents = [...VALID_INCIDENTS];
 let selectedIncidentId = null;
-let connectionsVisible = false;
+let connectionsVisible = true;
 let currentZoom = 1;
 
 // Status color mapping helper
@@ -100,12 +100,21 @@ function getStatusColor(status) {
   }
 }
 
-// UTC Clock Display
+// Real-Time Clock Display
 function updateClock() {
   const now = new Date();
-  const utcStr = now.toISOString().substring(11, 16) + ' UTC';
+  const pad = (n) => String(n).padStart(2, '0');
+  const localTime = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
   const clockEl = document.getElementById('clock-display');
-  if (clockEl) clockEl.textContent = utcStr;
+  if (clockEl) {
+    clockEl.textContent = localTime;
+  }
+  const timerEl = document.getElementById('session-timer');
+  if (timerEl) {
+    // Monotonic time since navigation avoids drift when the tab is backgrounded.
+    const elapsed = Math.floor(performance.now() / 1000);
+    timerEl.textContent = `${pad(Math.floor(elapsed / 3600))}:${pad(Math.floor(elapsed / 60) % 60)}:${pad(elapsed % 60)}`;
+  }
 }
 setInterval(updateClock, 1000);
 updateClock();
@@ -189,6 +198,7 @@ const zoom = d3.zoom()
     currentZoom = event.transform.k;
     g.attr('transform', event.transform);
     d3.select('#zoom-lvl').text(`${currentZoom.toFixed(1)}x`);
+    d3.select('#btn-reset').property('hidden', currentZoom <= 1.001);
 
     const scale = currentZoom;
     g.selectAll('.inc-marker circle.marker-hit')
@@ -300,6 +310,7 @@ function loadMapData() {
     })
     .catch(err => {
       console.error("[UAP MONITOR] Failed to load world map atlas:", err);
+      document.getElementById('loading-overlay').classList.add('map-load-error');
       document.getElementById('loading-overlay').innerHTML = `
         <div class="ld-text" style="color: #ff4040">MAP DATA LOAD ERROR</div>
         <div class="ld-sub">CHECK NETWORK CONNECTION OR STATIC HOSTING</div>
@@ -378,6 +389,12 @@ function renderMarkers() {
   if (connectionsVisible) drawConnections();
 }
 
+// Fixed five-year windows, independent of active search/status filters.
+// 1947–1951, 1952–1956, etc.; lines express time grouping only.
+function getConnectionPeriod(year) {
+  return Math.floor((year - 1947) / 5);
+}
+
 function drawConnections() {
   const layer = g.select('.connection-lines-layer');
   if (layer.empty()) return;
@@ -386,12 +403,15 @@ function drawConnections() {
   if (!connectionsVisible || filteredIncidents.length < 2) return;
 
   const sorted = [...filteredIncidents].sort((a, b) => {
-    const timeA = (a.date && !isNaN(new Date(a.date).getTime())) ? new Date(a.date).getTime() : ((a.year || 2000) * 31536000000);
-    const timeB = (b.date && !isNaN(new Date(b.date).getTime())) ? new Date(b.date).getTime() : ((b.year || 2000) * 31536000000);
+    if (a.year !== b.year) return a.year - b.year;
+    const timeA = Date.parse(a.date) || Date.UTC(a.year, 0, 1);
+    const timeB = Date.parse(b.date) || Date.UTC(b.year, 0, 1);
     return timeA - timeB;
   });
 
   for (let i = 0; i < sorted.length - 1; i++) {
+    if (getConnectionPeriod(sorted[i].year) !== getConnectionPeriod(sorted[i + 1].year)) continue;
+
     const p1 = projection([sorted[i].coords[1], sorted[i].coords[0]]);
     const p2 = projection([sorted[i + 1].coords[1], sorted[i + 1].coords[0]]);
     if (!p1 || !p2) continue;
@@ -416,8 +436,8 @@ function drawConnections() {
       ny = -0.35;
     }
 
-    // Dynamic curve height: shallow for short distances, smooth high arc for long distances
-    const arcHeight = Math.min(Math.max(dist * 0.18, 5), 110);
+    // Keep even long routes shallow; quadratic curves rise half this offset.
+    const arcHeight = Math.min(dist * 0.24, 90);
     const variation = 0.92 + ((i % 4) * 0.05); // subtle variation to prevent overlapping
     const curveOffset = arcHeight * variation;
 
@@ -426,8 +446,9 @@ function drawConnections() {
 
     const d = `M ${p1[0].toFixed(1)},${p1[1].toFixed(1)} Q ${cx.toFixed(1)},${cy.toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
 
+    // Plain blue-white dashed connections without glow or light overlays.
     layer.append('path')
-      .attr('class', 'connection-path')
+      .attr('class', 'connection-path connection-path--base')
       .attr('d', d);
   }
 }
@@ -1027,9 +1048,12 @@ window.addEventListener('keydown', (e) => {
 // ── 8. TOOLBAR BUTTONS (RADAR LINES & TIMELINE MODAL) ──────────────────────
 const btnTools = document.getElementById('btn-tools');
 if (btnTools) {
+  btnTools.classList.toggle('active', connectionsVisible);
+  btnTools.setAttribute('aria-pressed', String(connectionsVisible));
   btnTools.addEventListener('click', (e) => {
     e.stopPropagation();
     connectionsVisible = !connectionsVisible;
+    btnTools.setAttribute('aria-pressed', String(connectionsVisible));
     if (connectionsVisible) {
       btnTools.classList.add('active');
       drawConnections();
@@ -1071,6 +1095,13 @@ if (btnReset) {
     }
     renderIncidentList();
     renderMarkers();
+    svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity);
+  });
+}
+
+const mapCompassBtn = document.getElementById('map-compass');
+if (mapCompassBtn) {
+  mapCompassBtn.addEventListener('click', () => {
     svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity);
   });
 }

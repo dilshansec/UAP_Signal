@@ -7,6 +7,7 @@
   const desktopTouchDetection = zoom.touchable();
   let initialized = false;
   let showAll = false;
+  let mapFullscreen = false;
   const icons = {
     menu: '<path d="M3 5h18M3 12h18M3 19h18"/>',
     map: '<circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 6h14M5 18h14"/>',
@@ -24,6 +25,7 @@
   function initialize() {
     if (initialized) return;
     initialized = true;
+    initializeMapFullscreen();
     const header = document.createElement('header');
     header.className = 'mobile-header mobile-only';
     header.innerHTML = `<button class="mobile-menu-button" aria-label="Open navigation" aria-expanded="false" aria-controls="mobile-menu">${icon('menu')}</button>
@@ -44,9 +46,15 @@
       menu.hidden = true;
       menuButton.setAttribute('aria-expanded', 'false');
     });
-    const clock = () => { header.querySelector('time').textContent = new Date().toISOString().slice(11, 16) + ' UTC'; };
+    const clock = () => {
+      const now = new Date();
+      const pad = (n) => String(n).padStart(2, '0');
+      const localTime = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+      const timeEl = header.querySelector('time');
+      if (timeEl) timeEl.textContent = localTime;
+    };
     clock();
-    setInterval(clock, 30000);
+    setInterval(clock, 1000);
 
     const section = document.createElement('section');
     section.id = 'mobile-incidents';
@@ -121,6 +129,70 @@
     });
     document.body.append(nav);
     initializeMobileLoading();
+  }
+  function initializeMapFullscreen() {
+    const map = document.getElementById('map-area');
+    const button = document.createElement('button');
+    button.className = 'mobile-map-fullscreen';
+    button.type = 'button';
+    button.textContent = '⛶';
+    button.setAttribute('aria-label', 'Open map in landscape fullscreen');
+    button.setAttribute('aria-pressed', 'false');
+    map.append(button);
+    let placeholder;
+    let busy = false;
+    let savedScroll = 0;
+    function restore() {
+      if (!mapFullscreen) return;
+      mapFullscreen = false;
+      try { screen.orientation?.unlock?.(); } catch (_) {}
+      map.classList.remove('mobile-map-expanded');
+      document.documentElement.classList.remove('map-fullscreen-active');
+      placeholder.replaceWith(map);
+      button.textContent = '⛶';
+      button.setAttribute('aria-label', 'Open map in landscape fullscreen');
+      button.setAttribute('aria-pressed', 'false');
+      syncViewport();
+      window.scrollTo(0, savedScroll);
+      button.focus({ preventScroll: true });
+    }
+    async function close() {
+      if (document.fullscreenElement === map) {
+        try { await document.exitFullscreen(); } catch (_) {}
+      }
+      restore();
+    }
+    button.addEventListener('click', async () => {
+      if (busy) return;
+      busy = true;
+      try {
+        if (mapFullscreen) { await close(); return; }
+        savedScroll = window.scrollY;
+        placeholder = document.createElement('div');
+        placeholder.style.height = `${map.getBoundingClientRect().height}px`;
+        map.before(placeholder);
+        document.body.append(map);
+        mapFullscreen = true;
+        map.classList.remove('mobile-map-boot');
+        map.classList.add('mobile-map-expanded');
+        document.documentElement.classList.add('map-fullscreen-active');
+        button.textContent = '✕';
+        button.setAttribute('aria-label', 'Exit fullscreen map');
+        button.setAttribute('aria-pressed', 'true');
+        try {
+          await map.requestFullscreen();
+          if (mapFullscreen) await screen.orientation?.lock?.('landscape-secondary');
+        } catch (_) {
+          // The fixed landscape layout also works without native fullscreen/lock.
+        }
+      } finally { busy = false; }
+    });
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement) restore();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && mapFullscreen) close();
+    });
   }
   function playMobileMapIntro() {
     const map = document.getElementById('map-area');
@@ -207,12 +279,10 @@
     observer.observe(modal, { attributes: true, attributeFilter: ['class'] });
   }
   function syncViewport() {
+    if (mapFullscreen) return;
     document.documentElement.classList.toggle('mobile-enabled', viewport.matches);
-    // The desktop bounds lock panning at 1x. Give the phone map room to move,
-    // and register touch handlers even when responsive mode starts without touch.
-    zoom.translateExtent(viewport.matches
-      ? [[-width / 2, -height / 2], [width * 1.5, height * 1.5]]
-      : desktopPanBounds);
+    // Match desktop: fixed at 1x, bounded panning when zoomed in.
+    zoom.translateExtent(desktopPanBounds);
     zoom.touchable(viewport.matches ? () => true : desktopTouchDetection);
     svg.call(zoom);
     const map = document.getElementById('map-area');

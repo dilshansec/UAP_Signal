@@ -2,6 +2,10 @@
    All overrides are scoped to the mobile-enabled class and <= 800px screens. */
 .mobile-only { display: none; }
 @media (max-width: 800px) {
+  /* Apply before mobile.js runs so legacy loading screens cannot flash. */
+  #entry-overlay,
+  #loading-overlay:not(.map-load-error) { display: none !important; }
+  .mobile-enabled .map-compass { display: none; }
   html.mobile-enabled { background: #020a10; scroll-padding-top: 88px; }
   html.mobile-enabled body { display: block; width: 100%; height: auto !important; min-height: 100dvh; overflow: auto !important; background: radial-gradient(ellipse at top, #07202c 0, #020a10 55%); padding: 0 10px calc(66px + env(safe-area-inset-bottom)); }
   .mobile-enabled #mobile-warning, .mobile-enabled #entry-overlay,
@@ -80,6 +84,7 @@
   .mobile-enabled .map-actions-hud { left: auto; right: 10px; top: 12px; bottom: auto; }
   .mobile-enabled #btn-timeline { display: none; }
   .mobile-enabled .map-hud-btn { width: 38px; height: 38px; }
+  .mobile-enabled #btn-tools { width: 36px; height: 36px; }
   .mobile-enabled .coords { display: none; }
   .mobile-telemetry { position: absolute; left: 50%; top: -5px; transform: translate(-50%, -50%); z-index: 2; white-space: nowrap; text-align: center; padding: 6px 9px; border: 1px solid #174153; border-radius: 4px; color: #00cad7; background: #020b13dc; font: 600 10px 'Rajdhani', sans-serif; letter-spacing: 1.2px; pointer-events: none; }
   .mobile-telemetry span { display: block; }
@@ -197,4 +202,38 @@
   .mobile-loading-track span { display: block; width: 35%; height: 100%; background: #00d7e5; box-shadow: 0 0 8px #00d7e5; animation: mobileLoadingProgress 1.4s ease-in-out infinite; }
   @keyframes mobileLoadingProgress { from { transform: translateX(-100%); } to { transform: translateX(290%); } }
   @media (prefers-reduced-motion: reduce) { .mobile-loading-radar::after, .mobile-loading-track span { animation: none; } }
+}
+
+/* Map-only landscape view, including browsers without orientation lock. */
+.mobile-map-fullscreen { display: none; }
+@media (max-width: 800px) {
+  .mobile-enabled .mobile-map-fullscreen { display: block; }
+}
+.mobile-map-fullscreen {
+  position: absolute; bottom: 12px; left: 12px; z-index: 40;
+  width: 36px; height: 36px; padding: 0; border: 1px solid var(--border-subtle);
+  border-radius: 0; background: rgba(7, 14, 22, 0.92); color: #e8520a;
+  font: 700 22px 'Rajdhani', sans-serif; cursor: pointer;
+  box-shadow: none; text-shadow: none;
+  transition: background 0.15s, border-color 0.15s;
+}
+.mobile-map-fullscreen:hover { background: #1a0a05; border-color: #e8520a88; }
+.mobile-map-fullscreen:active { background: #2a1005; }
+.mobile-map-fullscreen:focus-visible { outline: 2px solid #ff8c42; outline-offset: 3px; }
+html.map-fullscreen-active, html.map-fullscreen-active body { overflow: hidden !important; }
+body > #map-area.mobile-map-expanded {
+  position: fixed !important; inset: 0 !important; width: 100vw !important;
+  height: 100dvh !important; max-width: none; max-height: none; margin: 0;
+  border: 0; border-radius: 0; z-index: 1000001; background: #020e17;
+  opacity: 1; filter: none; pointer-events: auto; visibility: visible;
+}
+.mobile-map-expanded .mobile-map-fullscreen { display: block; left: max(12px, env(safe-area-inset-left)); bottom: max(12px, env(safe-area-inset-bottom)); }
+.mobile-map-expanded .map-compass { display: none; }
+.mobile-map-expanded #world-map { width: 100%; height: 100%; touch-action: none; }
+@media (orientation: portrait) {
+  body > #map-area.mobile-map-expanded {
+    inset: auto !important; top: 50% !important; left: 50% !important;
+    width: 100dvh !important; height: 100vw !important;
+    transform: translate(-50%, -50%) rotate(-90deg);
+  }
 }

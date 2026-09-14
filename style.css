@@ -74,6 +74,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  gap: 14px;
 }
 
 .topbar-brand {
@@ -148,13 +149,13 @@ body {
   position: relative;
   display: inline-block;
   font-family: 'Orbitron', sans-serif;
-  font-size: 13.5px;
+  font-size: 18px;
   font-weight: 800;
-  letter-spacing: 2.5px;
+  letter-spacing: 3px;
   color: var(--accent-orange);
   margin: 0;
   text-transform: uppercase;
-  text-shadow: 0 0 12px rgba(255, 107, 26, 0.45);
+  text-shadow: 0 0 14px rgba(255, 107, 26, 0.5);
   white-space: nowrap;
   animation: hudTitleFlicker 6s infinite ease-in-out;
 }
@@ -1339,8 +1340,15 @@ body {
   font-size: 9px;
   letter-spacing: 1px;
   height: 20px;
-  color: var(--text-muted);
+  color: #ff8c42;
+  border-color: #ff6b1a;
+  background: #241005;
+  text-shadow: 0 0 5px rgba(255, 107, 26, 0.65);
   margin-top: 4px;
+}
+
+.zoom-reset[hidden] {
+  display: none;
 }
 
 .zoom-level {
@@ -1354,6 +1362,35 @@ body {
   background: rgba(5, 10, 18, 0.92);
   padding: 4px 8px;
   border: 1px solid var(--border-subtle);
+}
+
+.map-compass {
+  position: absolute;
+  top: 30px;
+  right: 62px;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 15;
+  cursor: pointer;
+  padding: 0;
+  user-select: none;
+  outline: none;
+  opacity: 0.8;
+  transition: transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
+  filter: drop-shadow(0 0 3px rgba(0, 229, 255, 0.35));
+}
+
+.map-compass:hover {
+  opacity: 1;
+  transform: scale(1.06);
+  filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.65));
+}
+
+.map-compass:active {
+  transform: scale(0.95);
 }
 
 #loading-overlay {
@@ -1454,19 +1491,94 @@ body {
 /* ==========================================================================
    CONNECTION LINES LAYER (CL RADAR TRANSMISSION PATHS)
    ========================================================================== */
+#btn-tools {
+  width: 28px;
+  height: 28px;
+  background: rgba(7, 14, 22, 0.92);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0;
+  color: #e8520a;
+  box-shadow: none;
+  transform: none;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+#btn-tools svg {
+  stroke: currentColor;
+  filter: none;
+  transform: none;
+}
+
+#btn-tools:hover {
+  background: #1a0a05;
+  border-color: #e8520a88;
+}
+
+#btn-tools:active { background: #2a1005; }
+#btn-tools:focus-visible { outline: 2px solid #e8520a; outline-offset: 2px; }
+
 .connection-lines-layer {
   pointer-events: none;
 }
 
 .connection-lines-layer path {
   fill: none;
-  stroke: #4dd0e1;
-  stroke-width: 1.2px;
-  stroke-opacity: 0.65;
-  stroke-dasharray: 2.5 3.5;
+  vector-effect: non-scaling-stroke;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+.connection-route {
+  --route-color: #b8e3ff;
   animation: clFadeIn 0.3s ease-out forwards;
+}
+
+.connection-lines-layer .connection-path--glow {
+  stroke: #69baff;
+  stroke-width: 3px;
+  stroke-dasharray: 5 5;
+  stroke-opacity: 0.22;
+  filter: blur(2.5px);
+}
+
+.connection-lines-layer .connection-path--base {
+  stroke: #b8e3ff;
+  stroke-width: 1px;
+  stroke-dasharray: 5 5;
+  stroke-opacity: 0.85;
+}
+
+.connection-lines-layer .connection-path--flow {
+  stroke: #e8ffff;
+  stroke-width: 1.5px;
+  stroke-dasharray: 2 98;
+  stroke-opacity: 0.9;
+  filter: drop-shadow(0 0 3px var(--route-color));
+  animation: connectionFlow var(--flow-duration, 6s) linear infinite;
+  animation-delay: var(--flow-delay, 0s);
+}
+
+@keyframes connectionFlow {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -100; }
+}
+
+.connection-lines-layer .connection-light--halo {
+  stroke: var(--route-color);
+  stroke-width: 9px;
+  stroke-opacity: 0.65;
+  filter: blur(3px);
+}
+
+.connection-lines-layer .connection-light--core {
+  stroke: #e8ffff;
+  stroke-width: 2.5px;
+  stroke-opacity: 0.95;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .connection-route { animation: none; }
+  .connection-lines-layer .connection-path--flow { animation: none; display: none; }
 }
 
 @keyframes clFadeIn {

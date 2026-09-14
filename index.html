@@ -142,88 +142,18 @@
     <button class="skip-entry" id="skip-entry" title="Skip Intro">SKIP //</button>
   </div>
 
-  <!-- Mobile Restricted Interface Warning Overlay (Past Mobile Screen) -->
-  <div id="mobile-warning" class="mobile-warning">
-    <!-- Screen Flash Warning Vignette -->
-    <div class="mobile-flash-overlay" id="mobile-flash-overlay"></div>
-
-    <!-- Hazard Tape Barrier Strips -->
-    <div class="tape-strip tape-diagonal-top">
-      <div class="tape-track">
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-      </div>
-    </div>
-    <div class="tape-strip tape-diagonal-1">
-      <div class="tape-track">
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-      </div>
-    </div>
-    <div class="tape-strip tape-diagonal-2">
-      <div class="tape-track">
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-      </div>
-    </div>
-    <div class="tape-strip tape-diagonal-bottom">
-      <div class="tape-track">
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-        <span>ACCESS RESTRICTED</span>
-      </div>
-    </div>
-
-    <!-- Shockwave Pulse Ring Effect -->
-    <div class="mobile-pulse-ring" id="mobile-pulse-ring"></div>
-
-    <!-- Center Classification Badge -->
-    <div class="restricted-card" id="mobile-restricted-card">
-      <div class="card-inner-border">
-        <div class="restricted-icon">
-          <span class="restricted-bar"></span>
-        </div>
-        <h2 class="restricted-heading">ACCESS RESTRICTED</h2>
-        <div class="restricted-sub" id="mobile-restricted-sub">CLICK ANYWHERE &middot; AUTHENTICATE</div>
-      </div>
-    </div>
-  </div>
-
   <!-- =========================================================================
        TOP NAVIGATION HIERARCHY (LEVEL 1 & LEVEL 2)
        ========================================================================= -->
   <!-- Level 1: Main Clean Header Bar -->
   <header class="topbar">
     <div class="topbar-left">
-      <div class="topbar-brand">
-        <span class="brand-radar-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff6b1a" stroke-width="2.2">
-            <circle cx="12" cy="12" r="9"/>
-            <circle cx="12" cy="12" r="3.5" fill="#ff6b1a"/>
-          </svg>
-        </span>
-        <span class="brand-name">GLOBAL INCIDENT MAP</span>
-        <span class="brand-status">// ACTIVE</span>
+      <div class="sys-status">
+        <span class="sys-dot"></span>
+        <span class="sys-label">RADAR ACTIVE</span>
       </div>
+      <span class="topbar-vsep">|</span>
+      <span class="topbar-clock" id="session-timer" role="timer" aria-label="Time since page opened" title="Time since page opened">00:00:00</span>
     </div>
     <div class="topbar-center">
       <div class="title-flank flank-left"></div>
@@ -313,9 +243,67 @@
       <div class="zoom-controls">
         <button class="zoom-btn" id="btn-zoom-in" title="Zoom In">+</button>
         <button class="zoom-btn" id="btn-zoom-out" title="Zoom Out">−</button>
-        <button class="zoom-btn zoom-reset" id="btn-reset" title="Reset Map View">RST</button>
+        <button class="zoom-btn zoom-reset" id="btn-reset" title="Reset Map View" hidden>RST</button>
       </div>
       <div class="zoom-level" id="zoom-lvl">1.0x</div>
+
+      <!-- Map Compass (Top Right) -->
+      <div class="map-compass" id="map-compass" title="Orientation: North (Click to Reset View)" aria-label="Compass Orientation: North" role="button" tabindex="0">
+        <svg viewBox="0 0 64 74" width="72" height="83.25" fill="none">
+          <!-- North 'N' Text -->
+          <text x="32" y="11" text-anchor="middle" font-family="'Orbitron', 'Rajdhani', sans-serif" font-size="10.5" font-weight="700" fill="#00e5ff" letter-spacing="1">N</text>
+
+          <!-- Outer Concentric Reticle Circle -->
+          <circle cx="32" cy="43" r="22" stroke="rgba(0, 229, 255, 0.38)" stroke-width="1.1" />
+
+          <!-- Inner Concentric Reticle Circle -->
+          <circle cx="32" cy="43" r="14" stroke="rgba(0, 229, 255, 0.22)" stroke-width="0.9" stroke-dasharray="2 2" />
+
+          <!-- Cardinal Crosshair Axes -->
+          <line x1="32" y1="16" x2="32" y2="70" stroke="rgba(0, 229, 255, 0.45)" stroke-width="1.1" />
+          <line x1="5" y1="43" x2="59" y2="43" stroke="rgba(0, 229, 255, 0.45)" stroke-width="1.1" />
+
+          <!-- Diagonal Calibration Ticks (between inner & outer circles) -->
+          <line x1="41.9" y1="33.1" x2="47.6" y2="27.4" stroke="rgba(0, 229, 255, 0.25)" stroke-width="0.9" />
+          <line x1="22.1" y1="33.1" x2="16.4" y2="27.4" stroke="rgba(0, 229, 255, 0.25)" stroke-width="0.9" />
+          <line x1="22.1" y1="52.9" x2="16.4" y2="58.6" stroke="rgba(0, 229, 255, 0.25)" stroke-width="0.9" />
+          <line x1="41.9" y1="52.9" x2="47.6" y2="58.6" stroke="rgba(0, 229, 255, 0.25)" stroke-width="0.9" />
+
+          <!-- Tactical 8-Point Compass Star -->
+          <g class="compass-star">
+            <!-- Diagonal Secondary Points -->
+            <polygon points="32,43 38.5,36.5 35,43" fill="rgba(0, 229, 255, 0.32)" />
+            <polygon points="32,43 38.5,36.5 32,39.5" fill="rgba(0, 229, 255, 0.52)" />
+            <polygon points="32,43 25.5,36.5 32,39.5" fill="rgba(0, 229, 255, 0.32)" />
+            <polygon points="32,43 25.5,36.5 29,43" fill="rgba(0, 229, 255, 0.52)" />
+            <polygon points="32,43 25.5,49.5 29,43" fill="rgba(0, 229, 255, 0.32)" />
+            <polygon points="32,43 25.5,49.5 32,46.5" fill="rgba(0, 229, 255, 0.52)" />
+            <polygon points="32,43 38.5,49.5 32,46.5" fill="rgba(0, 229, 255, 0.32)" />
+            <polygon points="32,43 38.5,49.5 35,43" fill="rgba(0, 229, 255, 0.52)" />
+
+            <!-- Primary 4 Points (North, South, West, East) -->
+            <!-- North Point (Highlighted Tactical Accent) -->
+            <polygon points="32,25 29.5,40 32,43" fill="#00e5ff" />
+            <polygon points="32,25 34.5,40 32,43" fill="#80f2ff" />
+
+            <!-- South Point -->
+            <polygon points="32,61 29.5,46 32,43" fill="#009db8" />
+            <polygon points="32,61 34.5,46 32,43" fill="#00e5ff" />
+
+            <!-- West Point -->
+            <polygon points="14,43 29,40.5 32,43" fill="#00e5ff" />
+            <polygon points="14,43 29,45.5 32,43" fill="#009db8" />
+
+            <!-- East Point -->
+            <polygon points="50,43 35,40.5 32,43" fill="#009db8" />
+            <polygon points="50,43 35,45.5 32,43" fill="#00e5ff" />
+
+            <!-- Center Pivot Core -->
+            <circle cx="32" cy="43" r="3.2" fill="#050a12" stroke="rgba(0, 229, 255, 0.6)" stroke-width="1.1" />
+            <circle cx="32" cy="43" r="1.2" fill="#00e5ff" />
+          </g>
+        </svg>
+      </div>
 
       <!-- Map HUD Actions (Bottom Left, exactly opposite to Legend - Icon Only) -->
       <div class="map-actions-hud">
@@ -327,7 +315,7 @@
           </svg>
         </button>
 
-        <button class="map-hud-btn" id="btn-tools" title="Toggle Connection Lines" aria-label="Toggle Connection Lines">
+        <button class="map-hud-btn active" id="btn-tools" title="Connect incidents within 5-year groups: 1947–1951, 1952–1956, … (time grouping only)" aria-label="Toggle five-year incident connections" aria-pressed="true">
           <svg class="hud-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="6" cy="12" r="3"></circle>
             <circle cx="18" cy="6" r="3"></circle>
@@ -488,100 +476,6 @@
   <!-- Optional mobile layout (all mobile behavior lives in this file). -->
   <script src="mobile.js" defer></script>
 
-  <!-- Mobile Restriction Interaction Handler (Past Mobile Screen) -->
-  <script>
-    (function() {
-      const mobileWarning = document.getElementById('mobile-warning');
-      const restrictedCard = document.getElementById('mobile-restricted-card');
-      const restrictedSub = document.getElementById('mobile-restricted-sub');
-      const pulseRing = document.getElementById('mobile-pulse-ring');
-      const flashOverlay = document.getElementById('mobile-flash-overlay');
 
-      if (!mobileWarning || !restrictedCard || !restrictedSub) return;
-
-      let timer = null;
-      let lastTapTime = 0;
-
-      // Synthetic Classified Audio Denial Tone (Zero external dependencies)
-      function playDenialBeep() {
-        try {
-          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-          if (!AudioContextClass) return;
-          if (!window.__mobAudioCtx) {
-            window.__mobAudioCtx = new AudioContextClass();
-          }
-          const ctx = window.__mobAudioCtx;
-          if (ctx.state === 'suspended') {
-            ctx.resume();
-          }
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(110, ctx.currentTime);
-          osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.14);
-
-          gain.gain.setValueAtTime(0.18, ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.14);
-
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start();
-          osc.stop(ctx.currentTime + 0.15);
-        } catch (e) {
-          // Audio fails gracefully if browser restricts
-        }
-      }
-
-      function triggerMobileDenial(e) {
-        const now = Date.now();
-        if (now - lastTapTime < 250) return; // Prevent double trigger from touch+click
-        lastTapTime = now;
-
-        // 1. Trigger Card Shake Animation
-        restrictedCard.classList.remove('denied-shake');
-        void restrictedCard.offsetWidth; // force DOM reflow
-        restrictedCard.classList.add('denied-shake');
-
-        // 2. Trigger Expanding Shockwave Pulse Ring Effect
-        if (pulseRing) {
-          pulseRing.classList.remove('pulse-active');
-          void pulseRing.offsetWidth;
-          pulseRing.classList.add('pulse-active');
-        }
-
-        // 3. Trigger Screen Perimeter Flash Effect
-        if (flashOverlay) {
-          flashOverlay.classList.remove('flash-active');
-          void flashOverlay.offsetWidth;
-          flashOverlay.classList.add('flash-active');
-        }
-
-        // 4. Update Subtext Feedback
-        restrictedSub.textContent = '[ AUTH FAILED // DESKTOP TERMINAL REQUIRED ]';
-        restrictedSub.style.color = '#ff3366';
-
-        // 5. Tactile Haptic Vibration for Mobile Devices
-        try {
-          if (navigator.vibrate) {
-            navigator.vibrate([45, 30, 45]);
-          }
-        } catch (err) {}
-
-        // 6. Play Micro Denial Sound Effect
-        playDenialBeep();
-
-        // 7. Reset Subtext after delay
-        clearTimeout(timer);
-        timer = setTimeout(function() {
-          restrictedSub.innerHTML = 'CLICK ANYWHERE &middot; AUTHENTICATE';
-          restrictedSub.style.color = '#ff7597';
-        }, 2200);
-      }
-
-      // Support pointerdown, touchstart, and click for instant response across all devices
-      mobileWarning.addEventListener('pointerdown', triggerMobileDenial, { passive: true });
-      mobileWarning.addEventListener('click', triggerMobileDenial);
-    })();
-  </script>
 </body>
 </html>
